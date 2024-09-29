@@ -37,20 +37,19 @@
                     margin-inline-end: 20px;
                     margin-top: 10px;
                 }
-                ul#package {
-                    max-width: 25%;
-                    list-style-type: none;
+                .package {
+                    list-style-type:circle;
                     font-size: 20px;
                     font-weight: bold;
                     text-align: left;
                     padding-inline-start: 0px;
                     padding-inline-end: 0px;
+                    padding-left:20px;
                     margin-left: 20px;
                     margin-top: 20px;
                     margin-top: 0px;}
 
-                ul#package li {
-                    max-width: 25%;
+                .package li {
                     font-weight: normal;
                     padding-top:5px;
                     font-size: 18px;
@@ -61,10 +60,47 @@
                     max-width:33%;
                     float: left;
                 }
-                .form-element#SubmitButton{
-                    text-decoration:underline;
+
+                form{
                     display:inline-block;
+                    width: 100%;
+                    margin-bottom: 60px;
+                }
+
+                .form-element{
+                    display: inline-block;
+                    max-width: 10%;
+                    color:#db8023;
+                    font-weight: bold;
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    padding: 20px;
+                }
+
+                .form-element input{
+                    max-width: 100px;
+                }
+
+                /* .form-element#SubmitButton input{
+                    text-decoration:underline;
                     margin: 0 auto;
+                    color:#db8023;
+                } */
+
+                @media(max-width: 465px)
+                {
+                    h2{
+                        font-size: 15px;
+                    }
+                    h3{
+                        font-size: 12px;
+                    }
+                    .package{
+                        font-size: 11px;
+                    }
+                    .package li{
+                        font-size: 10px;
+                    }
                 }
             </style>
             
@@ -123,7 +159,6 @@
             <ul class = "package">$699
                 <li>2 hours of platypus-centered interaction for university students</li>
                 <li>Includes presentation of platypus research being conducted by Platypus Rentals</li>
-                <li>Includes analysis of platypus habitats and habitat conservation</li>
                 <li>Includes a Q&A session with researchers at Platypus Rentals</li>
             </ul>
             </a>
@@ -143,7 +178,7 @@
             </div>
         </div>
 
-        <form>
+        <form method = "get" action = "#">
             <div class = "form-element">
                 <label>First Name: </label>
                 <input type = "text" name = "first_name"/>
@@ -160,7 +195,8 @@
                 <label>Address of Event: </label>
                 <input type = "text" name = "event_address"/>
             </div>
-            <div class = "form-element"></div>
+            
+            <div class = "form-element">
                 <label>Desired Package: </label>
                 <select name = "desired_package" id = "desiredPackage">
                     <option value = "Corporate">Corporate</option>
@@ -171,10 +207,14 @@
                     <option value = "University">University</option>
                     <option value = "Therapy">Therapy</option>
                     <option value = "Yoga">Yoga</option>
+                </select>
             </div>
-            <div class = "form-element" id = "SubmitButton">
+            <div class = "form-element">
                 <input type = "submit" value = "Reserve Now">
             </div>
+            <!-- <div class = "form-element" id = "SubmitButton">
+                <input type = "submit" value = "Reserve Now">
+            </div> -->
         </form>
 
     </body>
