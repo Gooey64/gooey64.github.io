@@ -1,0 +1,253 @@
+<html></html>
+<head>
+    <title>Joe's Hotdogs Online Ordering Site</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+
+        html, body{
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            background-color: orange;
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 30px;
+        }
+
+        h1 img{
+            max-width: 70px;
+            border-radius: 100%;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 0px;
+            margin-top: 5px;
+        }
+
+        h1 figure img{
+            float: right;
+        }
+
+        h1 figcaption{
+            margin-top: 30px;
+            float: left;
+            text-align: inline;
+        }
+
+        .threeItemContainer {
+            max-width: 100%;
+            display: inline-block;
+            padding-top: 20px;
+            padding-bottom: 30px;
+            box-sizing: border-box;
+            margin-inline-start: 30px;
+        }
+        img {
+            display: inline-block;
+            border: 5px solid;
+            border-radius: 25px;
+            margin: 20px;
+            max-width: 400px;
+        }
+        figure {
+            display: inline-block;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        figcaption{
+            font-size: 30px;
+        }
+
+        .buttonBox {
+            margin-right: 0px;
+            margin-left: 0px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            width: 100%;
+            display: inline-block;
+        }
+        button {
+            background-color: orange;
+            border: 0px solid orange;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 35px;
+            border-radius: 25px;
+            margin: 10px, 10px, 0px, 0px;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        button:hover {
+            background-color: orange;
+            color: red;
+            font-size: 38px;
+        }
+        #receipt {
+            max-width: 100%;
+            font-size: 20px;
+            text-align: center;
+            padding-inline-start: 0px;
+            padding-inline-end: 0px;
+            padding: 10px;
+            margin: 20px;
+        }
+
+        @media (max-width: 510px)
+        {
+            img {
+            display: inline-block;
+            border: 5px solid;
+            border-radius: 25px;
+            margin: 20px;
+            max-width: 300px;
+            }
+        }
+
+        @media (max-width: 420px)
+        {
+            img {
+            display: inline-block;
+            border: 5px solid;
+            border-radius: 25px;
+            margin: 20px;
+            max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <figure>
+            <figcaption>Joe's Hotdogs</figcaption>
+            <img src = "joes_4004400.jpg">
+        </figure>
+    </h1>
+    <script>
+        var hotdogPrice = 4.80;
+        var friesPrice = 3.95;
+        var drinksPrice = 1.99;
+        var numDogs = null;
+        var numFries = null;
+        var numSoda = null;
+
+        function requestOrder() {
+            numDogs = prompt("How many hot dogs would you like to order?", 0);
+            numFries = prompt("How many orders of french fries would you like?", 0);
+            numSoda = prompt("How many drinks would you like to order?", 0);
+    
+            var dogTotal = calculateSubtotal(hotdogPrice, numDogs);
+            var friesTotal = calculateSubtotal(friesPrice, numFries);
+            var drinksTotal = calculateSubtotal(drinksPrice, numSoda);
+            var yourTotal = calculateTotal(dogTotal, friesTotal, drinksTotal);
+
+            var message1 = "";
+            message1 += "Hotdogs: $" + showMoney(hotdogPrice) + " x " + numDogs + " = $" + showMoney(dogTotal) + '<br>';
+            message1 += "French Fries: $" + showMoney(friesPrice) + " x " + numFries + " = $" + showMoney(friesTotal) + '<br>';
+            message1 += "Drinks: $" + showMoney(drinksPrice) + " x " + numSoda + " = $" + showMoney(drinksTotal) + '<br>';
+
+            var message2 = "";
+
+    
+                if (yourTotal >= 25) {
+                    message2 += "Your subtotal was: $" + showMoney(yourTotal) + '<br><br>';
+                    message2 += "Since you spent $25 or over, you are receiving Joe's special discount!<br>";
+                    message2 += "Joe's Special Discount: -$" + showMoney(applyDiscount(yourTotal)) + '<br>';
+                    yourTotal = (yourTotal - applyDiscount(yourTotal));
+                    message2 += "Your subtotal is now: $" + showMoney(yourTotal) + '<br><br>';
+                } else {
+                    message2 += "Your subtotal is: $" + showMoney(yourTotal) + '<br>';
+                }
+
+                message2 += "Meal Tax (6.25%): $" + showMoney(applyTax(yourTotal)) + '<br><br>';
+                message2 += "Your Total: $" + showMoney((yourTotal + applyTax(yourTotal)));
+
+                // Write both messages to the page
+                writeToPage(message1, message2);
+                alert("Thank you! Your order has been placed\n\nYou can view your receipt at the bottom of the page");
+        }
+
+        function writeToPage(message1, message2) {
+            document.getElementById('receipt').style.border = "2px solid";
+            document.getElementById('receipt').innerHTML = 'Receipt' + '<br><br>' + message1 + '<br>' + message2;
+        }
+
+        function showMoney(price) {
+            var roundedPrice = Math.round(price * 100) / 100;
+            var roundedString = roundedPrice.toString();
+
+            if (roundedString.indexOf('.') === -1) {
+                roundedString += '.00';
+            } else if (roundedString.split('.')[1].length === 1) {
+                roundedString += '0';
+            }
+            return roundedString;
+        }
+
+        function calculateSubtotal(price, quantity) {
+            var subtotal = 0;
+            if (quantity !== null && quantity !== "") {
+                subtotal = (price * quantity);
+            }
+            return subtotal;
+        }
+
+        function calculateTotal(total1, total2, total3) {
+            return total1 + total2 + total3;
+        }
+
+        function applyDiscount(total) {
+            return total * 0.1;
+        }
+
+        function applyTax(total) {
+            return total * 0.0625;
+        }
+    </script>
+    
+    <div class="buttonBox">
+        <button onclick="requestOrder()">Order Now!</button>
+    </div>
+
+    <div class="threeItemContainer">
+        <figure>
+            <img src="hotdog_4002400.jpg" style="border-color:red">
+            <figcaption>Joe's Hot Dog<br>
+                <script>
+                    document.write(' $' + showMoney(hotdogPrice));
+                </script>
+            </figcaption>
+        </figure>
+        <figure>
+            <img src="fries_4003400.jpg" style="border-color: orange">
+            <figcaption>Joe's French Fries<br>
+                <script>
+                    document.write(' $' + showMoney(friesPrice));
+                </script>
+            </figcaption>
+        </figure>
+        <figure>
+            <img src="drink.jpg" style="border-color: #f7d436">
+            <figcaption>Fountain Drink<br>
+                <script>
+                    document.write(' $' + showMoney(drinksPrice));
+                </script>
+            </figcaption>
+
+        </figure>
+    </div>
+
+    <div id="receipt">
+    </div>
+</body>
+</html>
