@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TicTacToe</title>
+        <style>
+
+
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            div#topbar {
+                justify-content: center;
+                width: 100%;
+                height: 120px;
+                display: flex;
+                text-align: center;
+            }
+
+            div#turnCounter {
+                width: 100px;
+                height: 30px;
+                padding: 20px;
+                text-align: center;
+                font-size: 20px;
+                border: 2px solid black;
+            }
+
+            div#reset{
+                margin-left: 20px;
+                width: 100px;
+                height: 30px;
+                padding: 20px;
+                text-align: center;
+                font-size: 20px;
+                border: 2px solid black;
+            }
+
+            div#reset:hover{
+                background-color: #68ba63;
+            }
+
+            div#winCondition {
+                margin: auto;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                width: 200px;
+                padding: 20px;
+                text-align: center;
+                font-size: 20px;
+                border: 2px solid black;
+            }
+
+            div#TTTBoard {
+                display: grid;
+                grid-template-columns: repeat(3, 200px); /* Creates 3 equal columns */
+                justify-content: center;
+                grid-gap: 20px; /* Adds space between squares */
+                margin: auto;
+            }
+
+            .square {
+                text-align: center;
+                width: 180px;
+                height: 180px;
+                border: 2px solid black;
+                margin: auto;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                margin-right: 10px;
+            }
+
+            .square:hover{
+                background-color: #9fc9e3;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+                margin-top: 20%;
+
+            }
+
+            p.play {
+                margin-top: 20%;
+                font-size: 90px;
+                font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+
+            @media (max-width:730px)
+            {
+                .square {
+                width: 150px;
+                height: 150px;
+                }
+                p.play {
+                font-size: 75px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 150px); /* Creates 3 equal columns */
+                }
+            }
+
+            @media (max-width:530px)
+            {
+                .square {
+                width: 100px;
+                height: 100px;
+                }
+                p.play {
+                font-size: 50px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 100px); /* Creates 3 equal columns */
+                }
+            }
+
+            @media (max-width:450px)
+            {
+                .square {
+                width: 70px;
+                height: 70px;
+                }
+                p.play {
+                font-size: 35px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 70px); /* Creates 3 equal columns */
+                }
+            }
+
+        </style>
+        <script>
+            players = ["X", "O"];
+            turn = players[Math.floor(Math.random() * players.length)];
+
+            document.write("<h1>Cool Tic Tac Toe</h1>");
+            document.write("<div id = 'topbar'>");
+            document.write("<div id = 'turnCounter'>It is " + turn + "'s turn</div>");
+            document.write("<div id = 'reset'>Reset Board</div>");
+            
+
+            document.write("</div>");
+            document.write("<div id = TTTBoard>");
+            
+            const NUM_SQUARES = 9;
+            for (i=0; i<NUM_SQUARES; i++)
+            {
+                id = "sq"+i;
+                document.write( "<div class='square' id='" + id + "'></div>" );
+
+                document.getElementById(id).setAttribute("hasPlay", "false");
+                document.getElementById(id).addEventListener("click", addXO);
+            }
+
+            document.getElementById('reset').addEventListener("click", resetBoard);
+
+
+            function resetBoard()
+            {
+                for (i = 0; i < NUM_SQUARES; i++)
+                {
+                    id = "sq"+i;
+                    document.getElementById(id).setAttribute("hasPlay", "false");
+                    document.getElementById(id).innerHTML = '';
+                }
+            }
+
+            function addXO()
+            {
+                var hasPlay = document.getElementById(this.id).getAttribute("hasPlay");
+                if (hasPlay === "true")
+                {
+                    alert("This square is occupied");
+                }
+                else
+                {
+                    newXO = document.createElement("p");
+                    newXO.classList.add("play");
+                    newXO.innerHTML = turn;
+                    document.getElementById(this.id).append(newXO);
+                    document.getElementById(this.id).setAttribute("hasPlay", "true");
+                    console.log(this.id + " " + document.getElementById(this.id).getAttribute("hasPlay"));
+                    alert("You've put an " + turn + " in square " + this.id.charAt(2));
+                    changeTurn();
+                }
+                
+            }
+
+            function changeTurn()
+            {
+                if (turn === "X")
+                {
+                    turn = "O";
+                }
+                else
+                {
+                    turn = "X";
+                }
+                document.getElementById('turnCounter').innerHTML = "It is " + turn + "'s turn";
+            }
+            
+            document.write("</div>");
+            document.write("<div id = 'winCondition'>You must conquer 3 boxes in a row to win.</div>")
+
+            
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

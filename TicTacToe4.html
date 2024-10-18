@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+        <title>TicTacToe</title>
+        <style>
+
+            h1 {
+                font-size: 45px;
+                text-align: center;
+                margin-bottom: 20px;
+                font-family: "Lexend Deca";
+            }
+
+            div#topbar {
+                justify-content: center;
+                width: 100%;
+                height: 120px;
+                display: flex;
+                text-align: center;
+                font-size: 20px;
+                font-family: "Lexend Deca";
+                font-weight: 500;
+            }
+
+            div#turnCounter {
+                width: 150px;
+                height: 30px;
+                padding: 20px;
+                text-align: center;
+                border: 2px solid black;
+                background-color: #eed9ff;
+            }
+
+            div#reset{
+                margin-left: 20px;
+                width: 150px;
+                height: 30px;
+                padding: 20px;
+                text-align: center;
+                border: 2px solid black;
+                background-color: #eed9ff;
+            }
+
+            div#reset:hover{
+                background-color: #9fc9e3;
+            }
+
+            div#winCondition {
+                margin-left: 20px;
+                width: 100px;
+                height: 30px;
+                padding: 20px;
+                text-align: center;
+                border: 2px solid black;
+                background-color: #eed9ff;
+            }
+
+            div#TTTBoard {
+                display: grid;
+                grid-template-columns: repeat(3, 200px); /* Creates 3 equal columns */
+                justify-content: center;
+                grid-gap: 20px; /* Adds space between squares */
+                margin: auto;
+            }
+
+            .square {
+                text-align: center;
+                width: 160px;
+                height: 160px;
+                border: 2px solid black;
+                margin: auto;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                margin-right: 10px;
+                background-color: #eed9ff;
+            }
+
+            .square:hover{
+                background-color: #9fc9e3;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+                margin-top: 20%;
+
+            }
+
+            p.play {
+                margin-top: 20%;
+                font-size: 80px;
+                font-family: "Lexend Deca";
+            }
+
+            @media (max-width:730px)
+            {
+                .square {
+                width: 150px;
+                height: 150px;
+                }
+                p.play {
+                font-size: 75px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 150px); /* Creates 3 equal columns */
+                }
+                div#topbar {
+                    font-size: 18px;
+                }
+            }
+
+            @media (max-width:530px)
+            {
+                .square {
+                width: 100px;
+                height: 100px;
+                }
+                p.play {
+                font-size: 50px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 100px); /* Creates 3 equal columns */
+                }
+                div#topbar {
+                    font-size: 15px;
+                }
+            }
+
+            @media (max-width:450px)
+            {
+                h1{
+                    font-size: 20px;
+                }
+                .square {
+                width: 70px;
+                height: 70px;
+                }
+                p.play {
+                font-size: 35px;
+                }
+                div#TTTBoard {
+                grid-template-columns: repeat(3, 70px); /* Creates 3 equal columns */
+                }
+                div#topbar {
+                    font-size: 12px;
+                }
+            }
+
+        </style>
+        <script>
+            players = ["X", "O"];
+            turn = players[Math.floor(Math.random() * players.length)];
+
+            var board = [];
+            var moves = [];
+            var winConditions = [];
+            var gameOver = false;
+            var numXWins = 0;
+            var numOWins = 0;
+
+            document.write("<h1>Cool and Epic Tic Tac Toe</h1>");
+            document.write("<div id = 'topbar'>");
+
+            document.write("<div id = 'turnCounter'>It is " + turn + "'s turn</div>");
+            document.write("<div id = 'winCondition'>X: " + numXWins + "    O: " + numOWins + "</div>")
+            document.write("<div id = 'reset'>Reset Board</div>");
+            
+
+            document.write("</div>");
+            document.write("<div id = TTTBoard>");
+            
+            const NUM_SQUARES = 9;
+
+            for (i=0; i<NUM_SQUARES; i++)
+            {
+                moves[i] = "-";
+                id = "sq"+i;
+                document.write( "<div class='square' id='" + id + "'></div>" );
+
+                board.push(document.getElementById(id));
+                document.getElementById(id).setAttribute("hasPlay", "false");
+            }
+
+            //forEach loop adding event listeners to each square in board
+            board.forEach(square => {
+                square.addEventListener("click", addXO);
+                square.addEventListener("click", getMoves);
+                square.addEventListener("click", possibleWins);
+                });
+
+            document.getElementById('reset').addEventListener("click", resetBoard);
+
+            //keeps track of possible winning conditions and reacts when a win condition is created
+            function possibleWins()
+            {
+                winConditions = [];
+
+                //adds the conditions for a row-win
+                rowCondition = "";
+                for (i = 0; i < NUM_SQUARES; i+=3)
+                {
+                    rowCondition += moves[i] + moves[i+1] + moves[i+2];
+                    
+                    winConditions.push(rowCondition);
+                    
+                    rowCondition = "";
+                }
+
+                //adds the conditions for a column-win
+                colCondition = "";
+                for (i = 0; i < 3; i++)
+                {
+                    colCondition += moves[i] + moves[i+3] + moves[i+6];
+                    
+                    winConditions.push(colCondition);
+                    
+                    colCondition = "";
+                }
+
+
+                //adds conditions for a diagonal-win
+                winConditions.push(moves[0] + moves[4] + moves[8]);
+                winConditions.push(moves[2] + moves[4] + moves[6]);
+
+                //checks the winConditions array for a winning condition
+                for (i = 0; i < winConditions.length; i++)
+                {
+                    //prevents accumulation of points if game is over and player keeps pressing buttons
+                    if (gameOver === false)
+                    {
+                        if (winConditions[i] === "XXX" || winConditions[i] === "OOO")
+                        {
+                            gameOver = true;
+                            if (turn === "X")
+                            {
+                                numXWins++;
+                            }
+                            else
+                            {
+                                numOWins++;
+                            }
+                            document.getElementById("winCondition").innerText = turn + " won!";
+                            document.getElementById("winCondition").style.backgroundColor = "#f7de4d";
+                        }
+                    }
+                }
+                //prevents turn from changing when the game is over already or declaring a stalemate when last square creates win
+                if (gameOver === false)
+                {
+                    if (moves.indexOf('-') === -1)
+                    {
+                        gameOver = true;
+                        document.getElementById("winCondition").innerText = "Stalemate";
+                        document.getElementById("winCondition").style.backgroundColor = "#f7de4d";
+                    }
+                    else
+                    {
+                        changeTurn();
+                    }
+                }
+            }
+
+            //finds the moves in each square (or hyphens if there is no move in the square)
+            function getMoves()
+            {
+                parent = document.getElementById(this.id);
+                
+                n = this.id.charAt(2).charCodeAt(0) - '0'.charCodeAt(0);
+
+                moves[n] = parent.innerText;
+
+                for (i = 0; i < 9; i++)
+                {
+                    console.log(moves[i]);
+                }
+            }
+
+            //resets the board and updates the number of wins per player
+            function resetBoard()
+            {
+                winConditions = [];
+                gameOver = false;
+                document.getElementById("winCondition").innerText = "X: " + numXWins + "   O: " + numOWins;
+                document.getElementById("winCondition").style.backgroundColor = "#eed9ff";
+                
+                for (i = 0; i < NUM_SQUARES; i++)
+                {
+                    moves[i] = "-";
+                    id = "sq"+i;
+                    document.getElementById(id).setAttribute("hasPlay", "false");
+                    document.getElementById(id).innerHTML = '';
+                }
+            }
+
+            //adds an X or O to a square if it is empty and the game is still running
+            function addXO()
+            {
+                var hasPlay = document.getElementById(this.id).getAttribute("hasPlay");
+                if (gameOver === true)
+                {
+                    alert("The game is over. Please reset the board");
+                }
+                else if (hasPlay === "true")
+                {
+                    alert("This square is occupied");
+                }
+                else
+                {
+                    newXO = document.createElement("p");
+                    newXO.classList.add("play");
+                    newXO.innerHTML = turn;
+
+                    document.getElementById(this.id).append(newXO);
+                    document.getElementById(this.id).setAttribute("hasPlay", "true");
+                }                
+            }
+
+            //changes the turn from O to X or X to O
+            function changeTurn()
+            {
+                if (turn === "X")
+                {
+                    turn = "O";
+                }
+                else
+                {
+                    turn = "X";
+                }
+                document.getElementById('turnCounter').innerHTML = "It is " + turn + "'s turn";
+            }
+            
+            document.write("</div>");
+
+            
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
