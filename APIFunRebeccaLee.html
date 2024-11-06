@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+
+        <style>
+            #factBox{
+                margin: 4%;
+                margin-bottom: 1%;
+                padding: 4%;
+                background-color: #ffefba;
+                border-radius: 20px;
+            }
+            #fact{
+                text-align: center;
+                font-family: 'Lexend Deca';
+                font-weight: 600;
+            }
+            #buttonDiv{
+                width: 100%;
+                text-align: center;
+            }
+            #factButton{
+                margin-top: 10px;
+                width: 200px;
+                height: 100px;
+                font-size: 30px;
+                font-family: 'Lexend Deca';
+                font-weight: 300;
+                border-radius: 30px;
+                border: 0px;
+                background-color: #ffca57;
+            }
+            #APIInfo {
+                margin: 4%;
+                margin-top: 0;
+                padding: 4%;
+                background-color: #ffc7f6;
+                border-radius: 20px;
+            }
+            ul {
+                list-style-type: none;
+            }
+            li {
+                font-size: 18px;
+                font-family: "Lexend Deca";
+                font-weight: 300;
+                margin-top: 1%;
+                text-decoration: none;
+            }
+            li a{
+                color: #ff00d4;
+                text-decoration: none;
+            }
+            li a:hover{
+                color: #c800f0;
+                font-weight: 400;
+            }
+        </style>
+        <title>AJAX Assignment</title>
+    </head>
+    <body>
+        <div id = "factBox">
+            <h1 id="fact"></h1>
+            <div id = "buttonDiv">
+                <button id = "factButton" onClick = "getFact()">Next fact!</button>
+            </div>
+        </div>
+        <div id = "APIInfo">
+            <ul>
+                <li>The selected API is simple. It contains 5 cat facts in a JSON object. I then cycle through them with the "Next Fact" button.</li>
+                <li>The cat facts API was found on <a href="https://www.postman.com/cs-demo/public-rest-apis/request/69ieesi/cat-facts?tab=params" target = "_blank">Postman</a></li>
+                <li>No parameters were required for this API</li>
+                <li>This application might be helpful on a vet website to increase engagement on the site by providing cool cat facts</li>
+                <li>This application might also be helpful on a pet adoption website for similar reasons</li>
+            </ul>
+
+        </div>
+        
+        <script>
+            var index = 0;
+            function getFact() {
+                res = fetch("https://cat-fact.herokuapp.com/facts/").then(res => res.text()).then(data =>
+                {
+                    data = JSON.parse(data)
+                    coolFact = data[index].text;
+
+                    document.getElementById("fact").innerHTML = coolFact;
+
+                    if (index < data.length - 1)
+                    {
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                    
+                })
+                .catch (error => console.log(error))
+            }
+
+            getFact();
+
+        </script>
+
+    </body>
+</html>
