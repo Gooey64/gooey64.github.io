@@ -18,40 +18,19 @@
     </header>
 
     <main>
-        <section class="song-list">
-          <div class="song-header">
-            <!-- TODO: should be moved to the search page -->
-            <form action="#" id="search">
-              <div style="display: flex; gap: 10px;">
-                <label>
-                  Song title<br />
-                  <input type="text" 
-                         id="title-input"
-                         name="title"
-                         maxlength="40"
-                         required />
-                </label>
-                <label>
-                  Artist name<br />
-                  <input type="text"
-                         id="artist-input"
-                         name="artist"
-                         maxlength="40"
-                         required />
-                </label>
-                <button type="submit">Search</button>
-              </div>
-            </form>
-
-            <span id="song-display">Song will be displayed here.</span>
-            <span>WPM</span>
-            <span>Accuracy</span>
-          </div>
-
-          <div id="song-content">
-            Song lyrics will show up here.
-          </div>
-        </section>
+      <div>
+        <form action="type.html">
+          <label>
+            Username<br />
+            <input type="text" 
+                   id="username-input"
+                   name="username"
+                   maxlength="40"
+                   required />
+          </label>
+          <button type="submit">Let's type!</button>
+        </form>
+      </div>
     </main>
 
     <footer>
@@ -65,61 +44,6 @@
     </footer>
 
   <script>
-    // Anything within brackets (lazy), plus the newline after
-    const annotationRegex = /\[.*?\]\n?/g;
-
-    /**
-     * Removes the song structure annotations ("[Pre-chorus]" and the like).
-     */
-    const cleanLyrics = (lyrics) => {
-      return lyrics.replaceAll(annotationRegex, "")
-                    .replaceAll("\n", "<br />");
-      // ^
-      // Make newlines into line breaks so that HTML works
-      // TODO: change this when we make it a JS display
-    }
-
-    /**
-     * Handles the fetch'd data from the lyrics API.
-     * Populates the display with song info.
-     */
-    const handleData = (json) => {
-      if(!json["lyrics"]) {
-        document.getElementById("song-content").innerHTML = "Song could not be found!";
-        document.getElementById("song-display").innerHTML = "Song will be displayed here.";
-        return;
-      }
-
-      const lyrics = cleanLyrics(json["lyrics"]);
-      const title = json["title"];
-      const artist = json["artist"];
-      // const image = json["image"];
-
-      // TODO: change this when we make it a JS display
-      document.getElementById("song-content").innerHTML = lyrics;
-      document.getElementById("song-display").innerHTML = artist + " - " + title;
-    }
-
-    /**
-     * Callback function for when a user searches for a song.
-     * Populates the display with song info.
-     */
-    const handleSubmit = (event) => {
-      event.preventDefault();
-
-      const input = new FormData(document.forms[0]);
-      const title = input.get("title");
-      const artist = input.get("artist");
-      const url = `https://lyrist.vercel.app/api/${title}/${artist}`;
-      console.log(url);
-
-      fetch(url)
-        .then(res => res.text())
-        .then(text => handleData(JSON.parse(text)));
-    }
-
-    const form = document.getElementById("search");
-    form.addEventListener("submit", handleSubmit);
   </script>
 </body>
 </html>
