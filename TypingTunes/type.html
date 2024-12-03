@@ -20,7 +20,6 @@
     <main>
         <section class="song-list">
           <div class="song-header">
-            <!-- TODO: should be moved to the search page -->
             <form action="#" id="search">
               <div style="display: flex; gap: 10px;">
                 <label>
@@ -49,8 +48,11 @@
             <span id="username-display">Username</span>
           </div>
 
-          <div id="song-content">
+          <div id="current-line">
             Song lyrics will show up here.
+          </div>
+          <!-- TODO: put in stylesheet pls and thx -->
+          <div id="next-line" style="color: #808080;">
           </div>
         </section>
     </main>
@@ -67,17 +69,22 @@
 
   <script>
     // Anything within brackets (lazy), plus the newline after
-    const annotationRegex = /\[.*?\]\n?/g;
+    const ANNOTATION_REGEX = /\[.*?\]\n?/g;
+
+    // Stores the lyrics array (a string for each line)
+    let lyrics = [];
+
+    // Current line number
+    let lineNumber = 0;
 
     /**
      * Removes the song structure annotations ("[Pre-chorus]" and the like).
+     * Returns an array of strings.
      */
     const cleanLyrics = (lyrics) => {
-      return lyrics.replaceAll(annotationRegex, "")
-                   .replaceAll("\n", "<br />");
-      // ^
-      // Make newlines into line breaks so that HTML works
-      // TODO: change this when we make it a JS display
+      return lyrics.replaceAll(ANNOTATION_REGEX, "")
+                   .replaceAll(/\n+/g, "\n")
+                   .split("\n");
     }
 
     /**
@@ -86,18 +93,17 @@
      */
     const handleData = (json) => {
       if(!json["lyrics"]) {
-        document.getElementById("song-content").innerHTML = "Song could not be found!";
+        document.getElementById("current-line").innerHTML = "Song could not be found!";
         document.getElementById("song-display").innerHTML = "Song will be displayed here.";
         return;
       }
 
-      const lyrics = cleanLyrics(json["lyrics"]);
+      lyrics = cleanLyrics(json["lyrics"]);
       const title = json["title"];
       const artist = json["artist"];
-      // const image = json["image"];
 
-      // TODO: change this when we make it a JS display
-      document.getElementById("song-content").innerHTML = lyrics;
+      document.getElementById("current-line").innerHTML = lyrics[0];
+      document.getElementById("next-line").innerHTML = lyrics[1];
       document.getElementById("song-display").innerHTML = artist + " - " + title;
     }
 
@@ -112,7 +118,6 @@
       const title = input.get("title");
       const artist = input.get("artist");
       const url = `https://lyrist.vercel.app/api/${title}/${artist}`;
-      console.log(url);
 
       fetch(url)
         .then(res => res.text())
