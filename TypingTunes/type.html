@@ -83,8 +83,8 @@
      */
     const cleanLyrics = (lyrics) => {
       return lyrics.replaceAll(ANNOTATION_REGEX, "")
-                   .replaceAll(/\n+/g, "\n")
-                   .split("\n");
+                   .split("\n")
+                   .filter((line) => line !== ""); // remove empty strings
     }
 
     /**
