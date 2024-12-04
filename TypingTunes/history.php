@@ -19,8 +19,6 @@
 
     <main>
         <section class="song-list">
-
-
           <?php
             if(!isset($_COOKIE["username"])) {
               echo "Unable to retrieve history: username not found!";
@@ -30,7 +28,7 @@
 
             include "connect_db.php";
 
-            $sql = "SELECT * FROM games WHERE username = $username ORDER BY id DESC LIMIT 10";
+            $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY id DESC LIMIT 10";
             $result = $conn->query($sql);
 
             echo "$username's recent typing history";
