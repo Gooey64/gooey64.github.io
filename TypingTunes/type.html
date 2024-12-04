@@ -128,7 +128,11 @@
     form.addEventListener("submit", handleSubmit);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("username");
+    
+    const username = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("username="))
+      ?.split("=")[1];
     document.getElementById("username-display").innerHTML = username;
   </script>
 </body>
