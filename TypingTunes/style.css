@@ -148,7 +148,13 @@ td {
 }
 
 .login button:hover {
-    background-color: #D9B45D;
-    
+    background-color: #D9B45D;   
+}
+
+@media (max-width:450px) {
+  header {
+    display: flex;
+    flex-direction: row;
+  }
 }
   
