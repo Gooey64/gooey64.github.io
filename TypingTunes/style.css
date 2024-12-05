@@ -152,9 +152,6 @@ td {
 }
 
 @media (max-width:450px) {
-  header {
-    display: flex;
-    flex-direction: row;
-  }
+  
 }
   
