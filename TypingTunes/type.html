@@ -67,6 +67,7 @@
       <input type="text"
              id="type-input"
              name="type"
+             oninput = "processTypeInput()"
              size="80"
              disabled />
     </section>
@@ -163,6 +164,9 @@
     document.getElementById("username-display").innerHTML = username;
 
 
+    startTime = null;
+    endTime = null;
+
     //TODO: complete this function
     function updateLine() {
       displayedLine = document.getElementById("current-line").innerHTML = null;
@@ -178,18 +182,26 @@
       //hehehe you completed typing :) OR DID YOU???
       if (lineNumber == lyrics.length)
       {
-        displayedLine = "You completed typing.";
+        displayedLine = "You completed typing this song.";
+        endTime = Date.now();
+        calcWPM();
         //and then I think we can make it so that it will prompt you to search for another song
       }
 
+      
     }
 
     typedChar = 0;
     totalErrors = 0;
+    firstInput = true;
 
     function processTypeInput() {
       //TODO: complete this function
-
+      if (firstInput == true)
+      {
+        startTime = Date.now();
+        firstInput = false;
+      }
 
       typeInput = document.getElementById("type-input");
       currInput = typeInput.value;
@@ -230,7 +242,7 @@
       accuracy = (numCorrect / typedChar) * 100;
       document.getElementById("Accuracy").innerHTML = Math.round(accuracy);
 
-      //this automatically enters to the next line if it thinks you're done
+      //this automatically goes to the next line if it thinks you're done (I think)
       //we could change it so that you have to press enter to go to the next line
       if (currInput.length == currLine.length)
       {
@@ -244,6 +256,13 @@
       }
 
 
+    }
+
+    //TODO: complete this function to calculate the user's words per minute
+    function calcWPM()
+    {
+      elapsedTime = (endTime - startTime) / 1000;
+      
     }
   </script>
 </body>
