@@ -184,4 +184,22 @@ td {
   }
 
 }
+
+@media (max-width:900px) {
+    .login {
+        width: 100%;
+        margin: 15px;
+    }
+
+    .login form {
+        margin: 25px;
+    }
+
+    .login button {
+        width: 70%;
+    }
+
+    .login input {
+        width: 97%;
+    }
   
