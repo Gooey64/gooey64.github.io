@@ -16,6 +16,15 @@
       <a href="rankings.php">Rankings</a>
     </div>
   </header>
+  <header>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <h1><a href="index.html">Typing Tunes</a></h1>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </header>
 
   <main>
       <section class="song-list">
@@ -42,21 +51,36 @@
             </div>
           </form>
 
-          <span id="song-display">Song will be displayed here.</span>
-          <span>WPM</span>
-          <span>Accuracy</span>
-          <span id="username-display">Username</span>
-        </div>
+        <span id="song-display">Song will be displayed here.</span>
+        <span id = "WPM">WPM</span>
+        <span id = "Accuracy">Accuracy</span>
+        <span id="username-display">Username</span>
+      </div>
 
-        <div id="current-line">
-          Song lyrics will show up here.
-        </div>
-        <!-- TODO: put in stylesheet pls and thx -->
-        <div id="next-line" style="color: #808080;">
-        </div>
-      </section>
+      <div id="current-line">
+        Song lyrics will show up here.
+      </div>
+      <!-- TODO: put in stylesheet pls and thx -->
+      <div id="next-line" style="color: #808080;">
+      </div>
+
+      <input type="text"
+             id="type-input"
+             name="type"
+             size="80"
+             disabled />
+    </section>
   </main>
 
+  <footer>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <div><a href="index.html">Typing Tunes</a></div>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </footer>
   <footer>
     <div class="history">
       <a href="history.php">History</a>
@@ -92,6 +116,7 @@
      * Populates the display with song info.
      */
     const handleData = (json) => {
+      // Search did not return any results
       if(!json["lyrics"]) {
         document.getElementById("current-line").innerHTML = "Song could not be found!";
         document.getElementById("song-display").innerHTML = "Song will be displayed here.";
@@ -105,6 +130,9 @@
       document.getElementById("current-line").innerHTML = lyrics[0];
       document.getElementById("next-line").innerHTML = lyrics[1];
       document.getElementById("song-display").innerHTML = artist + " - " + title;
+
+      document.getElementById("type-input").disabled = false;
+      document.getElementById("type-input").select();
     }
 
     /**
@@ -129,11 +157,72 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     
-    const username = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("username="))
-      ?.split("=")[1];
+    const username = document.cookie.split("; ")
+                                    .find((row) => row.startsWith("username="))
+                                    ?.split("=")[1];
     document.getElementById("username-display").innerHTML = username;
+
+    //use this function to add the next line to be typed
+    function updateLine() {
+
+    }
+
+    typedChar = 0;
+    totalErrors = 0;
+
+    function processTypeInput() {
+      //TODO: complete this function
+      typeInput = document.getElementById("type-input");
+      currInput = typeInput.value;
+      currInputArray = currInput.split('');
+
+      typedChar++;
+      
+      numErrors = 0;
+
+      //is this going to have an error because I didn't split the
+      //currLine into an array? I don't think so, but maybe
+      currLine = document.getElementById("current-line").innerHTML;
+      currLine.forEach((char, index) => {
+        inputChar = currInputArray[index];
+
+        if (inputChar == null)
+        {
+          //remove characters from classes 'correct_char' and 'incorrect_char'
+          //Except I don't think we made those classes yet
+        }
+
+        //Is it even necessary to use innerText?
+        else if (inputChar == char.innerText)
+        {
+          //add character to correct_char class
+          //remove character from incorrect_char
+          //wait why are all the characters in both correct_char and incorrect_char by default
+          //shouldn't they all just have no class to start with
+        }
+        else {
+          //add character to incorrect_char class and remove from correct_char
+          numErrors++;
+        }
+      })
+
+      numCorrect = typedChar - (totalErrors + numErrors);
+      accuracy = (numCorrect / typedChar) * 100;
+      document.getElementById("Accuracy").innerHTML = Math.round(accuracy);
+
+      //this automatically enters to the next line if it thinks you're done
+      //we could change it so that you have to press enter to go to the next line
+      if (currInput.length == currLine.length)
+      {
+        //go to next line
+        total_errors += errors;
+
+        currInput = "";
+
+      }
+
+
+    }
   </script>
 </body>
 </html>
