@@ -163,7 +163,7 @@
     document.getElementById("username-display").innerHTML = username;
 
 
-    //TODO: complete this function to add the next line to be typed
+    //TODO: complete this function
     function updateLine() {
       displayedLine = document.getElementById("current-line").innerHTML = null;
       currLine = lyrics[lineNumber];
@@ -179,6 +179,7 @@
       if (lineNumber == lyrics.length)
       {
         displayedLine = "You completed typing.";
+        //and then I think we can make it so that it will prompt you to search for another song
       }
 
     }
