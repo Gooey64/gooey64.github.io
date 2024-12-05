@@ -10,7 +10,7 @@ body {
   
 header {
     background-color: #2B4753;
-    color: #D9B45D;
+    color: #D0894B;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -71,9 +71,9 @@ main {
   }
   
 footer {
-    position: fixed;
+    postion: fixed;
     background-color: #2B4753;
-    color: #D9B45D;
+    color: #D0894B;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -158,9 +158,9 @@ td {
     font-family: "Ubuntu", sans-serif;
   }
   table {
-    width: inherit;
+      max-width: 100%;
   }
-
+}
 
 @media (max-width:900px) {
     .login {
