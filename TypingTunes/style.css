@@ -71,6 +71,7 @@ main {
   }
   
 footer {
+    position: fixed;
     background-color: #2B4753;
     color: #D9B45D;
     padding: 15px;
@@ -156,32 +157,8 @@ td {
     font-size: 18px;
     font-family: "Ubuntu", sans-serif;
   }
-  table, thead, tbody, th, td, tr {
-    display: block;
+  table {
+    width: inherit;
   }
-
-  th {
-    display: none;
-  }
-
-  tr {
-    margin-bottom: 15px;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-  }
-
-  td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    flex-basis: 50%;
-    text-align: left;
-  }
-
 }
   
