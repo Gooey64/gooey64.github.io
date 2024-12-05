@@ -7,65 +7,65 @@
     <title>Typing Tunes</title>
 </head>
 <body>
-    <header>
-        <div class="history">
-          <a href="history.html">History</a>
+  <header>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <h1><a href="index.html">Typing Tunes</a></h1>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </header>
+
+  <main>
+      <section class="song-list">
+        <div class="song-header">
+          <form action="#" id="search">
+            <div style="display: flex; gap: 10px;">
+              <label>
+                Song title<br />
+                <input type="text" 
+                        id="title-input"
+                        name="title"
+                        maxlength="40"
+                        required />
+              </label>
+              <label>
+                Artist name<br />
+                <input type="text"
+                        id="artist-input"
+                        name="artist"
+                        maxlength="40"
+                        required />
+              </label>
+              <button type="submit">Search</button>
+            </div>
+          </form>
+
+          <span id="song-display">Song will be displayed here.</span>
+          <span>WPM</span>
+          <span>Accuracy</span>
+          <span id="username-display">Username</span>
         </div>
-        <h1>Typing Tunes</h1>
-        <div class="rankings">
-          <a href="rankings.html">Rankings</a>
+
+        <div id="current-line">
+          Song lyrics will show up here.
         </div>
-    </header>
+        <!-- TODO: put in stylesheet pls and thx -->
+        <div id="next-line" style="color: #808080;">
+        </div>
+      </section>
+  </main>
 
-    <main>
-        <section class="song-list">
-          <div class="song-header">
-            <form action="#" id="search">
-              <div style="display: flex; gap: 10px;">
-                <label>
-                  Song title<br />
-                  <input type="text" 
-                         id="title-input"
-                         name="title"
-                         maxlength="40"
-                         required />
-                </label>
-                <label>
-                  Artist name<br />
-                  <input type="text"
-                         id="artist-input"
-                         name="artist"
-                         maxlength="40"
-                         required />
-                </label>
-                <button type="submit">Search</button>
-              </div>
-            </form>
-
-            <span id="song-display">Song will be displayed here.</span>
-            <span>WPM</span>
-            <span>Accuracy</span>
-            <span id="username-display">Username</span>
-          </div>
-
-          <div id="current-line">
-            Song lyrics will show up here.
-          </div>
-          <!-- TODO: put in stylesheet pls and thx -->
-          <div id="next-line" style="color: #808080;">
-          </div>
-        </section>
-    </main>
-
-    <footer>
-      <div class="history">
-        <a href="history.html">History</a>
-      </div>
-      <div>Typing Tunes</div>
-      <div class="rankings">
-        <a href="rankings.html">Rankings</a>
-      </div>
-    </footer>
+  <footer>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <div><a href="index.html">Typing Tunes</a></div>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </footer>
 
   <script>
     // Anything within brackets (lazy), plus the newline after
