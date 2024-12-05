@@ -10,7 +10,7 @@ body {
   
 header {
     background-color: #2B4753;
-    color: #D0894B;
+    color: #D9B45D;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -72,7 +72,7 @@ main {
   
 footer {
     background-color: #2B4753;
-    color: #D0894B;
+    color: #D9B45D;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -152,6 +152,8 @@ td {
 }
 
 @media (max-width:450px) {
-  
+  header {
+    font-size: 18px;
+  }
 }
   
