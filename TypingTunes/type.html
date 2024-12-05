@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <title>Typing Tunes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <title>Typing Tunes</title>
 </head>
 <body>
   <header>
@@ -16,40 +16,31 @@
       <a href="rankings.php">Rankings</a>
     </div>
   </header>
-  <header>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <h1><a href="index.html">Typing Tunes</a></h1>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
-  </header>
 
   <main>
-      <section class="song-list">
-        <div class="song-header">
-          <form action="#" id="search">
-            <div style="display: flex; gap: 10px;">
-              <label>
-                Song title<br />
-                <input type="text" 
-                        id="title-input"
-                        name="title"
-                        maxlength="40"
-                        required />
-              </label>
-              <label>
-                Artist name<br />
-                <input type="text"
-                        id="artist-input"
-                        name="artist"
-                        maxlength="40"
-                        required />
-              </label>
-              <button type="submit">Search</button>
-            </div>
-          </form>
+    <section class="song-list">
+      <div class="song-header">
+        <form action="#" id="search">
+          <div style="display: flex; gap: 10px;">
+            <label>
+              Song title*<br />
+              <input type="text" 
+                     id="title-input"
+                     name="title"
+                     maxlength="40"
+                     autofocus
+                     required />
+            </label>
+            <label>
+              Artist name<br />
+              <input type="text"
+                     id="artist-input"
+                     name="artist"
+                     maxlength="40" />
+            </label>
+            <button type="submit">Search</button>
+          </div>
+        </form>
 
         <span id="song-display">Song will be displayed here.</span>
         <span id = "WPM">WPM</span>
@@ -73,15 +64,6 @@
     </section>
   </main>
 
-  <footer>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <div><a href="index.html">Typing Tunes</a></div>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
-  </footer>
   <footer>
     <div class="history">
       <a href="history.php">History</a>
@@ -146,7 +128,9 @@
       const input = new FormData(document.forms[0]);
       const title = input.get("title");
       const artist = input.get("artist");
-      const url = `https://lyrist.vercel.app/api/${title}/${artist}`;
+      const url = artist.length > 0
+        ? `https://lyrist.vercel.app/api/${title}/${artist}`
+        : `https://lyrist.vercel.app/api/${title}`;
 
       fetch(url)
         .then(res => res.text())
