@@ -156,4 +156,19 @@ td {
     font-size: 18px;
   }
 }
+
+@media (max-width:900px) {
+    .login {
+        width: 100%;
+        margin: 15px;
+    }
+
+    .login form {
+        margin: 20px;
+    }
+
+    .login button {
+        width: 70%;
+    }
+}
   
