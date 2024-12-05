@@ -154,6 +154,7 @@ td {
 @media (max-width:450px) {
   header h1 {
     font-size: 18px;
+    font-family: "Ubuntu", sans-serif;
   }
 }
   
