@@ -162,8 +162,24 @@
                                     ?.split("=")[1];
     document.getElementById("username-display").innerHTML = username;
 
+
     //TODO: complete this function to add the next line to be typed
     function updateLine() {
+      displayedLine = document.getElementById("current-line").innerHTML = null;
+      currLine = lyrics[lineNumber];
+
+      //Not sure if this is necessary either
+      currLine.split('').forEach(char => {
+        const charSpan = document.createElement('span');
+        charSpan.innerText = char;
+        displayedLine.appendChild(charSpan);
+      })
+      
+      //hehehe you completed typing :) OR DID YOU???
+      if (lineNumber == lyrics.length)
+      {
+        displayedLine = "You completed typing.";
+      }
 
     }
 
@@ -172,6 +188,8 @@
 
     function processTypeInput() {
       //TODO: complete this function
+
+
       typeInput = document.getElementById("type-input");
       currInput = typeInput.value;
       currInputArray = currInput.split('');
@@ -190,6 +208,7 @@
         {
           //remove characters from classes 'correct_char' and 'incorrect_char'
           //Except I don't think we made those classes yet
+          //this just changes the colour of the letters
         }
 
         //Is it even necessary to use innerText?
@@ -198,7 +217,7 @@
           //add character to correct_char class
           //remove character from incorrect_char
           //wait why are all the characters in both correct_char and incorrect_char by default
-          //shouldn't they all just have no class to start with
+          //shouldn't they all just have no class to start with if it's just to change the colours
         }
         else {
           //add character to incorrect_char class and remove from correct_char
@@ -214,6 +233,8 @@
       //we could change it so that you have to press enter to go to the next line
       if (currInput.length == currLine.length)
       {
+        lineNumber++;
+        updateLine();
         //go to next line
         total_errors += errors;
 
