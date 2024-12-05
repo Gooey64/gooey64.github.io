@@ -162,7 +162,7 @@
                                     ?.split("=")[1];
     document.getElementById("username-display").innerHTML = username;
 
-    //use this function to add the next line to be typed
+    //TODO: complete this function to add the next line to be typed
     function updateLine() {
 
     }
@@ -181,7 +181,7 @@
       numErrors = 0;
 
       //is this going to have an error because I didn't split the
-      //currLine into an array? I don't think so, but maybe
+      //currLine into an array? I don't think so, but maybe :/
       currLine = document.getElementById("current-line").innerHTML;
       currLine.forEach((char, index) => {
         inputChar = currInputArray[index];
