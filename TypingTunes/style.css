@@ -10,7 +10,7 @@ body {
   
 header {
     background-color: #2B4753;
-    color: #D9B45D;
+    color: #D0894B;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -72,7 +72,7 @@ main {
   
 footer {
     background-color: #2B4753;
-    color: #D9B45D;
+    color: #D0894B;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -154,6 +154,34 @@ td {
 @media (max-width:450px) {
   header h1 {
     font-size: 18px;
+    font-family: "Ubuntu", sans-serif;
   }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex-basis: 50%;
+    text-align: left;
+  }
+
 }
   
