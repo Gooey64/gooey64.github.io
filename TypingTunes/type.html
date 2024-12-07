@@ -1,71 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <title>Typing Tunes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <title>Typing Tunes</title>
 </head>
 <body>
-    <header>
-        <div class="history">
-          <a href="history.html">History</a>
-        </div>
-        <h1>Typing Tunes</h1>
-        <div class="rankings">
-          <a href="rankings.html">Rankings</a>
-        </div>
-    </header>
+  <header>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <h1><a href="index.html">Typing Tunes</a></h1>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </header>
 
-    <main>
-        <section class="song-list">
-          <div class="song-header">
-            <form action="#" id="search">
-              <div style="display: flex; gap: 10px;">
-                <label>
-                  Song title<br />
-                  <input type="text" 
-                         id="title-input"
-                         name="title"
-                         maxlength="40"
-                         required />
-                </label>
-                <label>
-                  Artist name<br />
-                  <input type="text"
-                         id="artist-input"
-                         name="artist"
-                         maxlength="40"
-                         required />
-                </label>
-                <button type="submit">Search</button>
-              </div>
-            </form>
-
-            <span id="song-display">Song will be displayed here.</span>
-            <span>WPM</span>
-            <span>Accuracy</span>
-            <span id="username-display">Username</span>
+  <main>
+    <section class="song-list">
+      <div class="song-header">
+        <form action="#" id="search">
+          <div style="display: flex; gap: 10px;">
+            <label>
+              Song title*<br />
+              <input type="text" 
+                     id="title-input"
+                     name="title"
+                     maxlength="40"
+                     autofocus
+                     required />
+            </label>
+            <label>
+              Artist name<br />
+              <input type="text"
+                     id="artist-input"
+                     name="artist"
+                     maxlength="40" />
+            </label>
+            <button type="submit">Search</button>
           </div>
+        </form>
 
-          <div id="current-line">
-            Song lyrics will show up here.
-          </div>
-          <!-- TODO: put in stylesheet pls and thx -->
-          <div id="next-line" style="color: #808080;">
-          </div>
-        </section>
-    </main>
-
-    <footer>
-      <div class="history">
-        <a href="history.html">History</a>
+        <span id="song-display">Song will be displayed here.</span>
+        <span id = "WPM">WPM</span>
+        <span id = "Accuracy">Accuracy</span>
+        <span id="username-display">Username</span>
       </div>
-      <div>Typing Tunes</div>
-      <div class="rankings">
-        <a href="rankings.html">Rankings</a>
+
+      <div id="current-line">
+        Song lyrics will show up here.
       </div>
-    </footer>
+      <!-- TODO: put in stylesheet pls and thx -->
+      <div id="next-line" style="color: #808080;">
+      </div>
+
+      <input type="text"
+             id="type-input"
+             name="type"
+             oninput = "processTypeInput()"
+             size="80"
+             disabled />
+    </section>
+  </main>
+
+  <footer>
+    <div class="history">
+      <a href="history.php">History</a>
+    </div>
+    <div><a href="index.html">Typing Tunes</a></div>
+    <div class="rankings">
+      <a href="rankings.php">Rankings</a>
+    </div>
+  </footer>
 
   <script>
     // Anything within brackets (lazy), plus the newline after
@@ -92,6 +99,7 @@
      * Populates the display with song info.
      */
     const handleData = (json) => {
+      // Search did not return any results
       if(!json["lyrics"]) {
         document.getElementById("current-line").innerHTML = "Song could not be found!";
         document.getElementById("song-display").innerHTML = "Song will be displayed here.";
@@ -105,6 +113,9 @@
       document.getElementById("current-line").innerHTML = lyrics[0];
       document.getElementById("next-line").innerHTML = lyrics[1];
       document.getElementById("song-display").innerHTML = artist + " - " + title;
+
+      document.getElementById("type-input").disabled = false;
+      document.getElementById("type-input").select();
     }
 
     /**
@@ -117,7 +128,9 @@
       const input = new FormData(document.forms[0]);
       const title = input.get("title");
       const artist = input.get("artist");
-      const url = `https://lyrist.vercel.app/api/${title}/${artist}`;
+      const url = artist.length > 0
+        ? `https://lyrist.vercel.app/api/${title}/${artist}`
+        : `https://lyrist.vercel.app/api/${title}`;
 
       fetch(url)
         .then(res => res.text())
@@ -130,6 +143,110 @@
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("username");
     document.getElementById("username-display").innerHTML = username;
+    // const username = document.cookie.split("; ")
+    //                                 .find((row) => row.startsWith("username="))
+    //                                 ?.split("=")[1];
+
+    startTime = null;
+    endTime = null;
+
+    //TODO: complete this function
+    function updateLine() {
+      displayedLine = document.getElementById("current-line").innerHTML = null;
+      currLine = lyrics[lineNumber];
+
+      //Not sure if this is necessary either
+      currLine.split('').forEach(char => {
+        const charSpan = document.createElement('span');
+        charSpan.innerText = char;
+        displayedLine.appendChild(charSpan);
+      })
+      
+      //hehehe you completed typing :) OR DID YOU???
+      if (lineNumber == lyrics.length)
+      {
+        displayedLine = "You completed typing this song.";
+        endTime = Date.now();
+        calcWPM();
+        //and then I think we can make it so that it will prompt you to search for another song
+      }
+
+      
+    }
+
+    typedChar = 0;
+    totalErrors = 0;
+    firstInput = true;
+
+    function processTypeInput() {
+      //TODO: complete this function
+      if (firstInput == true)
+      {
+        startTime = Date.now();
+        firstInput = false;
+      }
+
+      typeInput = document.getElementById("type-input");
+      currInput = typeInput.value;
+      currInputArray = currInput.split('');
+
+      typedChar++;
+      
+      numErrors = 0;
+
+      //is this going to have an error because I didn't split the
+      //currLine into an array? I don't think so, but maybe :/
+      currLine = document.getElementById("current-line").innerHTML;
+      currLine.forEach((char, index) => {
+        inputChar = currInputArray[index];
+
+        if (inputChar == null)
+        {
+          //remove characters from classes 'correct_char' and 'incorrect_char'
+          //Except I don't think we made those classes yet
+          //this just changes the colour of the letters
+        }
+
+        //Is it even necessary to use innerText?
+        else if (inputChar == char.innerText)
+        {
+          //add character to correct_char class
+          //remove character from incorrect_char
+          //wait why are all the characters in both correct_char and incorrect_char by default
+          //shouldn't they all just have no class to start with if it's just to change the colours
+        }
+        else {
+          //add character to incorrect_char class and remove from correct_char
+          numErrors++;
+        }
+      })
+
+      numCorrect = typedChar - (totalErrors + numErrors);
+      accuracy = (numCorrect / typedChar) * 100;
+      document.getElementById("Accuracy").innerHTML = Math.round(accuracy);
+
+      //this automatically goes to the next line if it thinks you're done (I think)
+      //we could change it so that you have to press enter to go to the next line
+      if (currInput.length == currLine.length)
+      {
+        lineNumber++;
+        updateLine();
+        //go to next line
+        total_errors += errors;
+
+        currInput = "";
+
+      }
+
+
+    }
+
+    //TODO: complete this function to calculate the user's words per minute
+    function calcWPM()
+    {
+      elapsedTime = (endTime - startTime) / 1000;
+      
+    }
   </script>
 </body>
 </html>
