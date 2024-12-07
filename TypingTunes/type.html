@@ -152,7 +152,7 @@
 
     //TODO: complete this function
     function updateLine() {
-      displayedLine = document.getElementById("current-line").innerHTML = null;
+      displayedLine = document.getElementById("current-line").innerText = null;
       currLine = lyrics[lineNumber];
 
       //Not sure if this is necessary either
@@ -196,7 +196,7 @@
 
       //is this going to have an error because I didn't split the
       //currLine into an array? I don't think so, but maybe :/
-      currLine = document.getElementById("current-line").innerHTML;
+      currLine = document.getElementById("current-line").innerText;
       currLine.forEach((char, index) => {
         inputChar = currInputArray[index];
 
