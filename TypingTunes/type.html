@@ -152,15 +152,15 @@
 
     //TODO: complete this function
     function updateLine() {
-      displayedLine = document.getElementById("current-line").innerText = null;
+      displayedLine = document.getElementById("current-line").textContent = null;
       currLine = lyrics[lineNumber];
 
       //Not sure if this is necessary either
-      currLine.split('').forEach(char => {
-        const charSpan = document.createElement('span');
-        charSpan.innerText = char;
-        displayedLine.appendChild(charSpan);
-      })
+      // currLine.split('').forEach(char => {
+      //   const charSpan = document.createElement('span');
+      //   charSpan.innerText = char;
+      //   displayedLine.appendChild(charSpan);
+      // })
       
       //hehehe you completed typing :) OR DID YOU???
       if (lineNumber == lyrics.length)
@@ -174,9 +174,9 @@
       
     }
 
-    typedChar = 0;
-    totalErrors = 0;
-    firstInput = true;
+    let typedChar = 0;
+    let totalErrors = 0;
+    let firstInput = true;
 
     function processTypeInput() {
       //TODO: complete this function
@@ -196,8 +196,8 @@
 
       //is this going to have an error because I didn't split the
       //currLine into an array? I don't think so, but maybe :/
-      currLine = document.getElementById("current-line").innerText;
-      currLine.forEach((char, index) => {
+      currLine = document.getElementById("current-line").textContent;
+      currLine.split('').forEach((char, index) => {
         inputChar = currInputArray[index];
 
         if (inputChar == null)
@@ -233,7 +233,7 @@
         lineNumber++;
         updateLine();
         //go to next line
-        total_errors += errors;
+        totalErrors += numErrors;
 
         currInput = "";
 
