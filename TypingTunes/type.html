@@ -84,6 +84,7 @@
     // Current line number
     let lineNumber = 0;
 
+
     /**
      * Removes the song structure annotations ("[Pre-chorus]" and the like).
      * Returns an array of strings.
@@ -116,6 +117,8 @@
 
       document.getElementById("type-input").disabled = false;
       document.getElementById("type-input").select();
+
+      console.log("This song is " + lyrics.length + " lines long");
     }
 
     /**
@@ -147,13 +150,26 @@
     //                                 .find((row) => row.startsWith("username="))
     //                                 ?.split("=")[1];
 
+    console.log("This song is " + lyrics.length + " lines long");
     startTime = null;
     endTime = null;
 
     //TODO: complete this function
     function updateLine() {
-      displayedLine = document.getElementById("current-line").textContent = null;
+      console.log("The current line number is: " + lineNumber);
+      
+      displayedLine = document.getElementById("current-line");
+      
+      displayedLine.innerHTML = lyrics[lineNumber];
+      console.log("The current line is: " + displayedLine);
+      
       currLine = lyrics[lineNumber];
+
+      console.log(lyrics[lineNumber]);
+      console.log(lyrics[lineNumber+1]);
+
+      linePreview = document.getElementById("next-line");
+      linePreview.innerHTML = lyrics[lineNumber+1];
 
       //Not sure if this is necessary either
       // currLine.split('').forEach(char => {
@@ -229,13 +245,18 @@
       //we could change it so that you have to press enter to go to the next line
       if (currInput.length == currLine.length)
       {
-        console.log("You completed one line");
-        lineNumber++;
-        updateLine();
-        //go to next line
-        totalErrors += numErrors;
-
-        currInput = "";
+        while (lineNumber < lyrics.length)
+        {
+          console.log("You completed one line");
+          lineNumber++;
+          updateLine();
+          //go to next line
+          totalErrors += numErrors;
+        
+          document.getElementById("type-input").value = "";
+        }
+        console.log("You have completed the song");
+        
 
       }
 
