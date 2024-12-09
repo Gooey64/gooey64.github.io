@@ -130,7 +130,9 @@
 
       const input = new FormData(document.forms[0]);
       const title = input.get("title");
+      // document.cookie = 'title';
       const artist = input.get("artist");
+      // document.cookie = 'artist';
       const url = artist.length > 0
         ? `https://lyrist.vercel.app/api/${title}/${artist}`
         : `https://lyrist.vercel.app/api/${title}`;
@@ -138,6 +140,7 @@
       fetch(url)
         .then(res => res.text())
         .then(text => handleData(JSON.parse(text)));
+
     }
 
     const form = document.getElementById("search");
@@ -145,13 +148,18 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("username");
+    // document.cookie= 'username';
     document.getElementById("username-display").innerHTML = username;
     // const username = document.cookie.split("; ")
     //                                 .find((row) => row.startsWith("username="))
     //                                 ?.split("=")[1];
 
+    //TODO: So right now, if you finish a song and search for a new one,
+    //the CPM and accuracy for the song you finished is still there. Also I didn't check to see
+
     console.log("This song is " + lyrics.length + " lines long");
     startTime = null;
+    console.log(startTime);
     endTime = null;
 
     //TODO: complete this function
@@ -169,7 +177,15 @@
       console.log(lyrics[lineNumber+1]);
 
       linePreview = document.getElementById("next-line");
-      linePreview.innerHTML = lyrics[lineNumber+1];
+      if (lineNumber == (lyrics.length - 1))
+      {
+        linePreview.innerHTML = " ";
+      }
+      else
+      {
+        linePreview.innerHTML = lyrics[lineNumber+1];
+      }
+      
 
       //Not sure if this is necessary either
       // currLine.split('').forEach(char => {
@@ -181,13 +197,39 @@
       //hehehe you completed typing :) OR DID YOU???
       if (lineNumber == lyrics.length)
       {
-        displayedLine = "You completed typing this song.";
+        displayedLine.innerHTML = "You completed typing this song.";
+        linePreview.innerHTML = "Search for another song!";
         endTime = Date.now();
-        calcWPM();
+        calcCPM();
+        sendData();
         //and then I think we can make it so that it will prompt you to search for another song
       }
 
       
+    }
+
+    function sendData(){
+      let cpm = document.getElementById("WPM").innerHTML;
+      let accuracy = document.getElementById("Accuracy").innerHTML;
+      let songDisplayArray = document.getElementById("song-display").innerText.split(" - ");
+      let title = songDisplayArray[1];
+      let artist = songDisplayArray[0];
+      fetch('send_data.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+          'username': username,
+          'title': title,
+          'artist': artist,
+          'wpm' : cpm,
+          'accuracy': accuracy
+        })
+      })
+      .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+      .catch(error => console.error('Error: ', error));
+
     }
 
     let typedChar = 0;
@@ -238,15 +280,16 @@
       })
 
       numCorrect = typedChar - (totalErrors + numErrors);
+      console.log("numCorrect: " + numCorrect);
+      console.log("totalErrors: " + numErrors);
       accuracy = (numCorrect / typedChar) * 100;
-      document.getElementById("Accuracy").innerHTML = Math.round(accuracy);
+      // document.cookie = 'accuracy';
+      document.getElementById("Accuracy").innerHTML = "Accuracy: " + Math.round(accuracy);
 
       //this automatically goes to the next line if it thinks you're done (I think)
       //we could change it so that you have to press enter to go to the next line
       if (currInput.length == currLine.length)
       {
-        while (lineNumber < lyrics.length)
-        {
           console.log("You completed one line");
           lineNumber++;
           updateLine();
@@ -254,19 +297,22 @@
           totalErrors += numErrors;
         
           document.getElementById("type-input").value = "";
-        }
-        console.log("You have completed the song");
-        
-
       }
-
-
     }
 
     //TODO: complete this function to calculate the user's words per minute
-    function calcWPM()
+    //note: It calculates CPM rn because that's easier
+    function calcCPM()
     {
       elapsedTime = (endTime - startTime) / 1000;
+      const cpm = Math.round((typedChar / elapsedTime)*60);
+      document.getElementById("WPM").innerHTML = cpm + " CPM";
+      // document.cookie = 'cpm';
+
+      console.log(typedChar);
+      console.log(numCorrect);
+      console.log(totalErrors);
+      
       
     }
   </script>
