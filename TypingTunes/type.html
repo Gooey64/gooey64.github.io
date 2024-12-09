@@ -115,6 +115,15 @@
       document.getElementById("next-line").innerHTML = lyrics[1];
       document.getElementById("song-display").innerHTML = artist + " - " + title;
 
+      //resets lineNumber, WPM, Accuracy, totalErrors, numWordsTyped, startTime, and firstInput to default values
+      lineNumber = 0;
+      document.getElementById("WPM").innerHTML = "WPM";
+      document.getElementById("Accuracy").innerHTML = "Accuracy";
+      totalErrors = 0;
+      numWordsTyped = 0;
+      startTime = null;
+      firstInput = true;
+
       document.getElementById("type-input").disabled = false;
       document.getElementById("type-input").select();
 
@@ -130,9 +139,7 @@
 
       const input = new FormData(document.forms[0]);
       const title = input.get("title");
-      // document.cookie = 'title';
       const artist = input.get("artist");
-      // document.cookie = 'artist';
       const url = artist.length > 0
         ? `https://lyrist.vercel.app/api/${title}/${artist}`
         : `https://lyrist.vercel.app/api/${title}`;
@@ -148,33 +155,24 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get("username");
-    // document.cookie= 'username';
     document.getElementById("username-display").innerHTML = username;
     // const username = document.cookie.split("; ")
     //                                 .find((row) => row.startsWith("username="))
     //                                 ?.split("=")[1];
 
-    //TODO: So right now, if you finish a song and search for a new one,
-    //the CPM and accuracy for the song you finished is still there. Also I didn't check to see
+    //defines start and end time that will be used to calculate wpm
+    let startTime = null;
+    let endTime = null;
 
-    console.log("This song is " + lyrics.length + " lines long");
-    startTime = null;
-    console.log(startTime);
-    endTime = null;
-
-    //TODO: complete this function
+    //updates displayed song lyrics so user can see the next line to be typed
     function updateLine() {
-      console.log("The current line number is: " + lineNumber);
       
       displayedLine = document.getElementById("current-line");
       
       displayedLine.innerHTML = lyrics[lineNumber];
-      console.log("The current line is: " + displayedLine);
       
       currLine = lyrics[lineNumber];
 
-      console.log(lyrics[lineNumber]);
-      console.log(lyrics[lineNumber+1]);
 
       linePreview = document.getElementById("next-line");
       if (lineNumber == (lyrics.length - 1))
@@ -185,37 +183,33 @@
       {
         linePreview.innerHTML = lyrics[lineNumber+1];
       }
-      
 
-      //Not sure if this is necessary either
-      // currLine.split('').forEach(char => {
-      //   const charSpan = document.createElement('span');
-      //   charSpan.innerText = char;
-      //   displayedLine.appendChild(charSpan);
-      // })
-      
-      //hehehe you completed typing :) OR DID YOU???
+      //disables typing upon completion of typing a song and displays a message saying the user should
+      //search for another song
+      //also calculates wpm, accuracy, and sends user data to database
       if (lineNumber == lyrics.length)
       {
+        document.getElementById("type-input").disabled = true;
         displayedLine.innerHTML = "You completed typing this song.";
         linePreview.innerHTML = "Search for another song!";
         endTime = Date.now();
-        calcCPM();
+        calcWPM();
         calcAccuracy();
         sendData();
-        //and then I think we can make it so that it will prompt you to search for another song
+        typedChar = 0;
       }
-
-      
     }
 
+    //sends the user's data about a song they finished typing to the database
     function sendData(){
+      //stores the information to be sent to database in variables
       let wpm = document.getElementById("WPM").innerHTML;
       let accuracy = document.getElementById("Accuracy").innerHTML;
       let songDisplayArray = document.getElementById("song-display").innerText.split(" - ");
       let title = songDisplayArray[1];
       let artist = songDisplayArray[0];
-      console.log("Accuracy: " + accuracy);
+
+
       fetch('send_data.php', {
         method: 'POST',
         body: new URLSearchParams({
@@ -238,9 +232,12 @@
     let totalErrors = 0;
     let firstInput = true;
     let numCorrect = 0;
+    let numWordsTyped = 0;
 
+    //processes the user's input as they type
     function processTypeInput() {
-      //TODO: complete this function
+      console.log("firstInput: " + firstInput);
+      //starts timer that will be used to calculate wpm
       if (firstInput == true)
       {
         startTime = Date.now();
@@ -249,78 +246,77 @@
 
       typeInput = document.getElementById("type-input");
       currInput = typeInput.value;
+      //splits the user's input into characters
       currInputArray = currInput.split('');
 
-      typedChar++;
-      
+      //sets number of errors to 0
       numErrors = 0;
 
-      //is this going to have an error because I didn't split the
-      //currLine into an array? I don't think so, but maybe :/
+      //increases the number of characters the user typed
+      typedChar++;
+      
       displayedLine = document.getElementById("current-line");
       displayedLine.innerHTML.split('').forEach((char, index) => {
-        inputChar = currInputArray[index];
-
-        if (inputChar == null)
+      inputChar = currInputArray[index];
+        //increases errors if user's inputted char does not match expected char
+        if (inputChar != char)
         {
-          //do nothing I guess?
-        }
-
-        //Is it even necessary to use innerText?
-        else if (inputChar != char)
-        {
-          console.log(inputChar + " does not equal " + char)
           numErrors++;
-          //add character to incorrect_char class and remove from correct_char
-          
-        }
-        else{
-          //add character to correct_char class
-          //remove character from incorrect_char
-          //wait why are all the characters in both correct_char and incorrect_char by default
-          //shouldn't they all just have no class to start with if it's just to change the colours
         }
       })
 
-
-      //this automatically goes to the next line if it thinks you're done (I think)
-      //we could change it so that you have to press enter to go to the next line
+      //handles stuff after the user completes one line of a song
       if (currInput.length == displayedLine.innerHTML.length)
       {
           console.log("You completed one line");
+          //increases the line number so the user can move  to the next line
           lineNumber++;
-          updateLine();
-          //go to next line
+          
+          //adds the number of errors in the completed line to the total errors
           totalErrors += numErrors;
-        
+          //accounts for the last word typed in a line (where the user wouldn't have typed a space)
+          numWordsTyped++;
+
+          //counts the number of words a user typed by the number of spaces they typed
+          currInputArray.forEach((char) => {
+            if (char == ' ')
+            {
+              numWordsTyped++;
+            }
+          })
+
+          //moves the user to the next line
+          updateLine();
+
+          //clears the user's input so they can type freely in the next line
           document.getElementById("type-input").value = "";
       }
     }
 
+    //calculates the user's accuracy
     function calcAccuracy()
     {
       numCorrect = typedChar - totalErrors;
-      console.log("numCorrect: " + numCorrect);
-      console.log("totalErrors: " + numErrors);
       accuracy = (numCorrect / typedChar) * 100;
-      // document.cookie = 'accuracy';
       document.getElementById("Accuracy").innerHTML = Math.round(accuracy) + " % Accuracy";
     }
 
-    //TODO: complete this function to calculate the user's words per minute
-    //note: It calculates CPM rn because that's easier
-    function calcCPM()
+    //calculates the user's cpm and wpm
+    function calcWPM()
     {
+      elapsedTime = 0;
+      console.log("endTime: " + endTime);
+      console.log("startTime: " + startTime);
       elapsedTime = (endTime - startTime) / 1000;
       const cpm = Math.round((typedChar / elapsedTime)*60);
-      document.getElementById("WPM").innerHTML = cpm + " CPM";
-      // document.cookie = 'cpm';
+      const wpm = Math.round(((numWordsTyped) / elapsedTime)*60)
+      document.getElementById("WPM").innerHTML = wpm + " WPM";
 
       console.log("typedChar: " + typedChar);
       console.log("numCorrect: " + numCorrect);
       console.log("totalErrors: " + totalErrors);
-      
-      
+      console.log("numWords: " + numWordsTyped);
+
     }
   </script>
 </body>
