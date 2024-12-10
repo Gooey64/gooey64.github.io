@@ -6,7 +6,7 @@ body {
     margin: 0;
     font-family: "Ubuntu", sans-serif;
     color: #333;
-  }
+}
   
 header {
     background-color: #2B4753;
@@ -16,25 +16,27 @@ header {
     justify-content: space-between;
     align-items: center;
     font-size: 18px;
-  }
+    width: 100%;
+    position: fixed;
+}
   
 header h1 {
     margin: 0;
     font-size: 24px;
     font-family: "Red Hat Display";
-  }
+}
   
 header a {
     color: #D0894B;
     text-decoration: none;
     font-weight: bold;
-  }
+}
 
 footer a {
     color: #D0894B;
     text-decoration: none;
     font-weight: bold;
-  }
+}
 
 .history {
     padding-left: 30px;
@@ -48,7 +50,7 @@ main {
     padding: 20px;
     display: flex;
     justify-content: center;
-  }
+}
   
 .song-list {
     width: 80%;
@@ -56,22 +58,25 @@ main {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-  }
+}
   
 .song-header {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
     margin-bottom: 15px;
-  }
+}
   
 .song-content p {
     line-height: 1.8;
     margin: 0;
-  }
+}
+
+#next-line {
+    color: #808080;
+}
   
 footer {
-    postion: fixed;
     background-color: #2B4753;
     color: #D0894B;
     padding: 15px;
@@ -80,11 +85,15 @@ footer {
     align-items: center;
     font-size: 18px;
     font-weight: bold;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
   
 footer p {
     margin: 5px 0;
-  }
+}
 
 /* for history and rankings */
   
@@ -153,13 +162,13 @@ td {
 }
 
 @media (max-width:450px) {
-  header h1 {
-    font-size: 18px;
-    font-family: "Ubuntu", sans-serif;
-  }
-  table {
-      max-width: 100%;
-  }
+    header h1 {
+        font-size: 18px;
+        font-family: "Ubuntu", sans-serif;
+    }
+    table {
+        max-width: 100%;
+    }
 }
 
 @media (max-width:900px) {
@@ -179,4 +188,4 @@ td {
     .login input {
         width: 97%;
     }
-  }
+}

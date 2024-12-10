@@ -51,14 +51,13 @@
       <div id="current-line">
         Song lyrics will show up here.
       </div>
-      <!-- TODO: put in stylesheet pls and thx -->
-      <div id="next-line" style="color: #808080;">
+      <div id="next-line">
       </div>
 
       <input type="text"
              id="type-input"
              name="type"
-             oninput = "processTypeInput()"
+             oninput="processTypeInput()"
              size="80"
              disabled />
     </section>
@@ -77,22 +76,56 @@
   <script>
     // Anything within brackets (lazy), plus the newline after
     const ANNOTATION_REGEX = /\[.*?\]\n?/g;
+    // Does not include apostrophe (')
+    const PUNCTUATION_REGEX = /[!"#$%&()*+,-./:;<=>?@[\]^_`{|}~]/g;
 
     // Stores the lyrics array (a string for each line)
     let lyrics = [];
 
-    // Current line number
-    let lineNumber = 0;
+    let lineNumber = 0; // Current line number
+    let typedChar = 0;
+    let totalErrors = 0;
+    let firstInput = true;
+    let numCorrect = 0;
+    let numWordsTyped = 0;
 
+    // Start and end times for WPM calculation
+    let startTime = null;
+    let endTime = null;
 
     /**
-     * Removes the song structure annotations ("[Pre-chorus]" and the like).
+     * Removes the song structure annotations ("[Pre-chorus]" and the like)
+     * and punctuation (e.g., periods).
      * Returns an array of strings.
      */
     const cleanLyrics = (lyrics) => {
       return lyrics.replaceAll(ANNOTATION_REGEX, "")
+                   .replaceAll(PUNCTUATION_REGEX, "")
                    .split("\n")
                    .filter((line) => line !== ""); // remove empty strings
+    }
+
+    /**
+     * Resets the typing game.
+     */
+    const resetGame = () => {
+      // Reset parameters
+      lineNumber = 0;
+      totalErrors = 0;
+      numWordsTyped = 0;
+      startTime = null;
+      firstInput = true;
+      typedChar = 0;
+
+      // Update display
+      document.getElementById("WPM").innerHTML = "WPM";
+      document.getElementById("Accuracy").innerHTML = "Accuracy";
+
+      // Ready the type input
+      const typeInput = document.getElementById("type-input");
+      typeInput.disabled = false; // allow the user to use it
+      typeInput.select();         // focus the input
+      typeInput.value = "";       // clear the input
     }
 
     /**
@@ -102,8 +135,10 @@
     const handleData = (json) => {
       // Search did not return any results
       if(!json["lyrics"]) {
-        document.getElementById("current-line").innerHTML = "Song could not be found!";
-        document.getElementById("song-display").innerHTML = "Song will be displayed here.";
+        document.getElementById("current-line").innerHTML
+          = "Song could not be found!";
+        document.getElementById("song-display").innerHTML
+          = "Song will be displayed here.";
         return;
       }
 
@@ -115,19 +150,7 @@
       document.getElementById("next-line").innerHTML = lyrics[1];
       document.getElementById("song-display").innerHTML = artist + " - " + title;
 
-      //resets lineNumber, WPM, Accuracy, totalErrors, numWordsTyped, startTime, and firstInput to default values
-      lineNumber = 0;
-      document.getElementById("WPM").innerHTML = "WPM";
-      document.getElementById("Accuracy").innerHTML = "Accuracy";
-      totalErrors = 0;
-      numWordsTyped = 0;
-      startTime = null;
-      firstInput = true;
-
-      document.getElementById("type-input").disabled = false;
-      document.getElementById("type-input").select();
-
-      console.log("This song is " + lyrics.length + " lines long");
+      resetGame();
     }
 
     /**
@@ -147,68 +170,64 @@
       fetch(url)
         .then(res => res.text())
         .then(text => handleData(JSON.parse(text)));
-
     }
 
+    // Attach event listener to search form
     const form = document.getElementById("search");
     form.addEventListener("submit", handleSubmit);
 
+    // Get username from cookie and display
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("username");
+    const username = document.cookie.split("; ")
+                                    .find((row) => row.startsWith("username="))
+                                    ?.split("=")[1];
     document.getElementById("username-display").innerHTML = username;
-    // const username = document.cookie.split("; ")
-    //                                 .find((row) => row.startsWith("username="))
-    //                                 ?.split("=")[1];
 
-    //defines start and end time that will be used to calculate wpm
-    let startTime = null;
-    let endTime = null;
+    /**
+     * Updates the current line and preview line when the user finishes typing
+     * the current line. If the song is done, instead 1) ends the game,
+     * 2) displays a message prompting the user to select another song, and
+     * 3) calculates the stats and sends the game event to the database.
+     */
+    const updateLine = () => {
+      currentLine = document.getElementById("current-line");
+      nextLine = document.getElementById("next-line");
 
-    //updates displayed song lyrics so user can see the next line to be typed
-    function updateLine() {
-      
-      displayedLine = document.getElementById("current-line");
-      
-      displayedLine.innerHTML = lyrics[lineNumber];
-      
-      currLine = lyrics[lineNumber];
-
-
-      linePreview = document.getElementById("next-line");
-      if (lineNumber == (lyrics.length - 1))
-      {
-        linePreview.innerHTML = " ";
-      }
-      else
-      {
-        linePreview.innerHTML = lyrics[lineNumber+1];
-      }
-
-      //disables typing upon completion of typing a song and displays a message saying the user should
-      //search for another song
-      //also calculates wpm, accuracy, and sends user data to database
-      if (lineNumber == lyrics.length)
-      {
+      // Game completed
+      if (lineNumber == lyrics.length) {
         document.getElementById("type-input").disabled = true;
-        displayedLine.innerHTML = "You completed typing this song.";
-        linePreview.innerHTML = "Search for another song!";
+        
+        currentLine.innerHTML = "You completed typing this song.";
+        nextLine.innerHTML = "Search for another song to play again!";
+        
         endTime = Date.now();
         calcWPM();
         calcAccuracy();
         sendData();
-        typedChar = 0;
+
+        return;
       }
+
+      currentLine.innerHTML = lyrics[lineNumber];
+
+      // If current line is the last one, there is no next line
+      if (lineNumber == (lyrics.length - 1))
+        nextLine.innerHTML = "";
+      else
+        nextLine.innerHTML = lyrics[lineNumber + 1];
     }
 
-    //sends the user's data about a song they finished typing to the database
-    function sendData(){
-      //stores the information to be sent to database in variables
-      let wpm = document.getElementById("WPM").innerHTML;
-      let accuracy = document.getElementById("Accuracy").innerHTML;
-      let songDisplayArray = document.getElementById("song-display").innerText.split(" - ");
-      let title = songDisplayArray[1];
-      let artist = songDisplayArray[0];
-
+    /**
+     * Send the current game's stats to the database.
+     */
+    let sendData = () => {
+      const wpm = document.getElementById("WPM").innerHTML;
+      const accuracy = (typedChar - totalErrors) / typedChar * 100;
+      const songDisplayArray = document.getElementById("song-display")
+                                       .innerText
+                                       .split(" - ");
+      const title = songDisplayArray[1];
+      const artist = songDisplayArray[0];
 
       fetch('send_data.php', {
         method: 'POST',
@@ -220,21 +239,14 @@
           'accuracy': accuracy
         })
       })
-      .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-      .catch(error => console.error('Error: ', error));
-
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error sending data: ', error));
     }
 
-    let typedChar = 0;
-    let totalErrors = 0;
-    let firstInput = true;
-    let numCorrect = 0;
-    let numWordsTyped = 0;
-
-    //processes the user's input as they type
+    /**
+     * Callback that processes the user's input after each input
+     */
     function processTypeInput() {
       console.log("firstInput: " + firstInput);
       //starts timer that will be used to calculate wpm
