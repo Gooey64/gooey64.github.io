@@ -20,7 +20,7 @@
   <main>
     <section class="song-list">
     
-      <h1>Rankings</h1>
+      <h2>Rankings</h2>
 
       <?php
         include "connect_db.php";
@@ -64,5 +64,32 @@
   <footer>
     <div id = "footerLink"><a href="login.php">Log Out</a></div>
   </footer>
+
+  <script>
+      // Function to add timestamp to links
+function addTimestampToLinks() {
+    // Select all anchor tags
+    const links = document.querySelectorAll('a');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Only modify internal links
+            if (!this.href.includes('http') || this.href.includes(window.location.hostname)) {
+                // Add timestamp only if not already present
+                if (!this.href.includes('_=')) {
+                    const separator = this.href.includes('?') ? '&' : '?';
+                    this.href += separator + '_=' + new Date().getTime();
+                }
+            }
+        });
+    });
+}
+
+// Run the function when the page loads
+document.addEventListener('DOMContentLoaded', addTimestampToLinks);
+
+  </script>
+
+
 </body>
 </html>

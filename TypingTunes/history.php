@@ -31,7 +31,7 @@
         $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY id DESC LIMIT 10";
         $result = $conn->query($sql);
 
-        echo "$username's recent typing history";
+        echo "<h2>$username's recent typing history</h2>";
         echo "<table>";
 
         // Header row

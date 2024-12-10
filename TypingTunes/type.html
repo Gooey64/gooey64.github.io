@@ -328,11 +328,35 @@
     }
 
 
+
     // Add event listeners to type input
     document.getElementById("type-input")
       .addEventListener("input", handleInput);
     document.getElementById("type-input")
       .addEventListener("keyup", handleNextLine);
+
+    // Function to add timestamp to links
+function addTimestampToLinks() {
+    // Select all anchor tags
+    const links = document.querySelectorAll('a');
+    
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Only modify internal links
+            if (!this.href.includes('http') || this.href.includes(window.location.hostname)) {
+                // Add timestamp only if not already present
+                if (!this.href.includes('_=')) {
+                    const separator = this.href.includes('?') ? '&' : '?';
+                    this.href += separator + '_=' + new Date().getTime();
+                }
+            }
+        });
+    });
+}
+
+// Run the function when the page loads
+document.addEventListener('DOMContentLoaded', addTimestampToLinks);
+
   </script>
 </body>
 </html>
