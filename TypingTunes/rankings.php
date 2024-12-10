@@ -25,9 +25,20 @@
       <?php
         include "connect_db.php";
 
-        $sql = "SELECT * FROM games ORDER BY wpm DESC";
+        $sort_order = "wpm";
+        if(isset($_GET["sort"]))
+          $sort_order = $_GET["sort"];
+
+        if($sort_order == "wpm")
+          $sql = "SELECT * FROM games ORDER BY wpm DESC";
+        else if($sort_order == "acc")
+          $sql = "SELECT * FROM games ORDER BY accuracy DESC";
+        else // $sort_order == "new"
+          $sql = "SELECT * FROM games ORDER BY id DESC";
+        
         $result = $conn->query($sql);
 
+        include "sort_form.php";
         echo "<table>";
 
         // Header row
