@@ -47,8 +47,10 @@ footer a {
 }
   
 main {
-    padding: 20px;
+    /* padding-top: 40px; */
+    padding: 60px;
     display: flex;
+    /* width: ; */
     justify-content: center;
 }
   
@@ -159,6 +161,20 @@ td {
 
 .login button:hover {
     background-color: #D9B45D;   
+}
+
+.login li {
+    color: #B7472F;
+    line-height: 2;
+}
+
+.login a {
+    color: #D0894B;
+    text-decoration: none;
+}
+
+.login a:hover {
+    color: #D9B45D
 }
 
 @media (max-width:450px) {
