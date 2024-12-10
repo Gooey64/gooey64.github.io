@@ -47,10 +47,8 @@ footer a {
 }
   
 main {
-    /* padding-top: 40px; */
-    padding: 60px;
+    padding: 80px;
     display: flex;
-    /* width: ; */
     justify-content: center;
 }
   
