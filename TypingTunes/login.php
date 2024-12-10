@@ -97,11 +97,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </main>
 
 <footer>
-    //   <div class="history">
-    //   </div>
+       <div class="history">
+       </div>
       <div>Typing Tunes</div>
-    //   <div class="rankings">
-    //   </div>
+       <div class="rankings">
+       </div>
     </footer>
 
         <script>
