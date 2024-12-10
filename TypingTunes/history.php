@@ -11,7 +11,7 @@
     <div class="history">
       <a href="history.php">History</a>
     </div>
-    <h1><a href="index.html">Typing Tunes</a></h1>
+    <h1><a href="type.html">Typing Tunes</a></h1>
     <div class="rankings">
       <a href="rankings.php">Rankings</a>
     </div>
