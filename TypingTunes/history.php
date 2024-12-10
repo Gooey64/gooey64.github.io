@@ -28,10 +28,21 @@
 
         include "connect_db.php";
 
-        $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY id DESC LIMIT 10";
+        $sort_order = "wpm";
+        if(isset($_GET["sort"]))
+          $sort_order = $_GET["sort"];
+
+        if($sort_order == "wpm")
+          $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY wpm DESC LIMIT 10";
+        else if($sort_order == "acc")
+          $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY accuracy DESC LIMIT 10";
+        else // $sort_order == "new"
+          $sql = "SELECT * FROM games WHERE username = \"$username\" ORDER BY id DESC LIMIT 10";
+        
         $result = $conn->query($sql);
 
         echo "<h2>$username's recent typing history</h2>";
+        include "sort_form.php";
         echo "<table>";
 
         // Header row
@@ -55,6 +66,17 @@
         echo "</table>";
       ?>
     </section>
+
+    <script>
+      const queryString = window.location.search;
+      const params = new URLSearchParams(queryString);
+      for (const pair of params.entries()) {
+        if(pair[0] == "sort") {
+          document.getElementById("sort-select").value = pair[1];
+          break;
+        }
+      }
+    </script>
   </main>
 
   <footer>
