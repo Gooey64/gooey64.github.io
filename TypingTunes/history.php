@@ -58,13 +58,7 @@
   </main>
 
   <footer>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <div><a href="index.html">Typing Tunes</a></div>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
+    <div id = "footerLink"><a href="login.php">Log Out</a></div>
   </footer>
 </body>
 </html>

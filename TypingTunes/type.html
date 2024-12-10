@@ -11,7 +11,7 @@
     <div class="history">
       <a href="history.php">History</a>
     </div>
-    <h1><a href="index.html">Typing Tunes</a></h1>
+    <h1><a href="type.html">Typing Tunes</a></h1>
     <div class="rankings">
       <a href="rankings.php">Rankings</a>
     </div>
@@ -63,13 +63,7 @@
   </main>
 
   <footer>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <div><a href="index.html">Typing Tunes</a></div>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
+    <div id = "footerLink"><a href="login.php">Log Out</a></div>
   </footer>
 
   <script>
@@ -100,8 +94,7 @@
     /**
      * Removes the song structure annotations ("[Pre-chorus]" and the like)
      * and punctuation (e.g., periods).
-     * Returns an array of strings representing the sequence of lines in the
-     * song.
+     * Returns an array of strings.
      */
     const cleanLyrics = (lyrics) => {
       return lyrics.replaceAll(ANNOTATION_REGEX, "")
@@ -294,6 +287,8 @@
       const numCorrect = typed - errors;
       const accuracy = (numCorrect / typed) * 100;
 
+      console.log(typed, errors);
+
       document.getElementById("Accuracy").innerHTML =
           Math.round(accuracy) + " % Accuracy";
     }
@@ -331,6 +326,7 @@
       // Reset the input
       document.getElementById("type-input").value = "";
     }
+
 
     // Add event listeners to type input
     document.getElementById("type-input")
