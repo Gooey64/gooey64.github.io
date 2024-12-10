@@ -57,7 +57,6 @@
       <input type="text"
              id="type-input"
              name="type"
-             oninput="processTypeInput()"
              size="80"
              disabled />
     </section>
@@ -76,18 +75,23 @@
   <script>
     // Anything within brackets (lazy), plus the newline after
     const ANNOTATION_REGEX = /\[.*?\]\n?/g;
-    // Does not include apostrophe (')
-    const PUNCTUATION_REGEX = /[!"#$%&()*+,-./:;<=>?@[\]^_`{|}~]/g;
+    // Does not include apostrophe ('), comma (,)
+    const PUNCTUATION_REGEX = /[!"#$%&()*+-./:;<=>?@[\]^_`{|}~]/g;
 
     // Stores the lyrics array (a string for each line)
     let lyrics = [];
 
-    let lineNumber = 0; // Current line number
-    let typedChar = 0;
+    // Current line number
+    let lineNumber = 0; 
+
+    // Does not count the current line
+    let totalTyped = 0;
     let totalErrors = 0;
-    let firstInput = true;
-    let numCorrect = 0;
-    let numWordsTyped = 0;
+
+    // Tracks the number of characters typed/number of errors made in the
+    // current line
+    let lineTyped = 0;
+    let lineErrors = 0;
 
     // Start and end times for WPM calculation
     let startTime = null;
@@ -96,7 +100,8 @@
     /**
      * Removes the song structure annotations ("[Pre-chorus]" and the like)
      * and punctuation (e.g., periods).
-     * Returns an array of strings.
+     * Returns an array of strings representing the sequence of lines in the
+     * song.
      */
     const cleanLyrics = (lyrics) => {
       return lyrics.replaceAll(ANNOTATION_REGEX, "")
@@ -110,12 +115,14 @@
      */
     const resetGame = () => {
       // Reset parameters
+      startTime = null;
+
       lineNumber = 0;
       totalErrors = 0;
-      numWordsTyped = 0;
-      startTime = null;
-      firstInput = true;
-      typedChar = 0;
+      totalTyped = 0;
+
+      lineTyped = 0;
+      lineErrors = 0;
 
       // Update display
       document.getElementById("WPM").innerHTML = "WPM";
@@ -222,7 +229,7 @@
      */
     let sendData = () => {
       const wpm = document.getElementById("WPM").innerHTML;
-      const accuracy = (typedChar - totalErrors) / typedChar * 100;
+      const accuracy = (totalTyped - totalErrors) / totalTyped * 100;
       const songDisplayArray = document.getElementById("song-display")
                                        .innerText
                                        .split(" - ");
@@ -247,89 +254,89 @@
     /**
      * Callback that processes the user's input after each input
      */
-    function processTypeInput() {
-      console.log("firstInput: " + firstInput);
+    const handleInput = () => {
       //starts timer that will be used to calculate wpm
-      if (firstInput == true)
+      if (startTime == null)
       {
         startTime = Date.now();
-        firstInput = false;
       }
 
-      typeInput = document.getElementById("type-input");
-      currInput = typeInput.value;
-      //splits the user's input into characters
-      currInputArray = currInput.split('');
+      const typeInput = document.getElementById("type-input");
+      const currInput = typeInput.value;
+      const currInputArray = currInput.split('');
 
-      //sets number of errors to 0
-      numErrors = 0;
-
-      //increases the number of characters the user typed
-      typedChar++;
+      lineErrors = 0;
+      lineTyped = currInput.length;
       
       displayedLine = document.getElementById("current-line");
       displayedLine.innerHTML.split('').forEach((char, index) => {
-      inputChar = currInputArray[index];
-        //increases errors if user's inputted char does not match expected char
+        // Don't want to count errors past where the user has typed
+        if(index >= currInputArray.length)
+          return;
+        
+        inputChar = currInputArray[index];
+        // Increases errors if user's inputted char does not match expected char
         if (inputChar != char)
-        {
-          numErrors++;
-        }
-      })
+          lineErrors++;
+      });
 
-      //handles stuff after the user completes one line of a song
-      if (currInput.length == displayedLine.innerHTML.length)
-      {
-          console.log("You completed one line");
-          //increases the line number so the user can move  to the next line
-          lineNumber++;
-          
-          //adds the number of errors in the completed line to the total errors
-          totalErrors += numErrors;
-          //accounts for the last word typed in a line (where the user wouldn't have typed a space)
-          numWordsTyped++;
-
-          //counts the number of words a user typed by the number of spaces they typed
-          currInputArray.forEach((char) => {
-            if (char == ' ')
-            {
-              numWordsTyped++;
-            }
-          })
-
-          //moves the user to the next line
-          updateLine();
-
-          //clears the user's input so they can type freely in the next line
-          document.getElementById("type-input").value = "";
-      }
+      calcAccuracy();
+      calcWPM();
     }
 
-    //calculates the user's accuracy
-    function calcAccuracy()
-    {
-      numCorrect = typedChar - totalErrors;
-      accuracy = (numCorrect / typedChar) * 100;
-      document.getElementById("Accuracy").innerHTML = Math.round(accuracy) + " % Accuracy";
+    /**
+     * Updates the display with the user's accuracy
+     */
+    const calcAccuracy = () => {
+      const typed = totalTyped + lineTyped;
+      const errors = totalErrors + lineErrors;
+
+      const numCorrect = typed - errors;
+      const accuracy = (numCorrect / typed) * 100;
+
+      document.getElementById("Accuracy").innerHTML =
+          Math.round(accuracy) + " % Accuracy";
     }
 
-    //calculates the user's cpm and wpm
+    /**
+     * Updates the display with the user's WPM
+     */
     function calcWPM()
     {
-      elapsedTime = 0;
-      console.log("endTime: " + endTime);
-      console.log("startTime: " + startTime);
-      elapsedTime = (endTime - startTime) / 1000;
-      const cpm = Math.round((typedChar / elapsedTime)*60);
-      const wpm = Math.round(((numWordsTyped) / elapsedTime)*60)
+      const currentTime = Date.now();
+      const elapsedMillis = endTime == null
+        ? (currentTime - startTime) / 1000
+        : (endTime - startTime) / 1000;
+
+      const wordsTyped = (totalTyped + lineTyped) / 5;
+      const minutesTyped = elapsedMillis / 60;
+      const wpm = Math.round(wordsTyped / minutesTyped);
+
       document.getElementById("WPM").innerHTML = wpm + " WPM";
-
-      console.log("typedChar: " + typedChar);
-      console.log("numCorrect: " + numCorrect);
-      console.log("totalErrors: " + totalErrors);
-      console.log("numWords: " + numWordsTyped);
-
     }
+
+    /**
+     * Handles switching to the next line when user presses Enter
+     */
+    const handleNextLine = (event) => {
+      if(event.key !== "Enter")
+        return;
+      
+      lineNumber++;
+      totalTyped += lineTyped;
+      totalErrors += lineErrors;
+
+      updateLine();
+
+      // Reset the input
+      document.getElementById("type-input").value = "";
+    }
+
+    // Add event listeners to type input
+    document.getElementById("type-input")
+      .addEventListener("input", handleInput);
+    document.getElementById("type-input")
+      .addEventListener("keyup", handleNextLine);
   </script>
 </body>
 </html>
