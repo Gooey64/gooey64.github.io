@@ -47,13 +47,16 @@ footer a {
 }
   
 main {
-    padding: 80px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 80px;
+    padding-right: 80px;
     display: flex;
     justify-content: center;
 }
   
 .song-list {
-    width: 80%;
+    width: 100%;
     background-color: #f8f8f8;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -95,9 +98,37 @@ footer p {
     margin: 5px 0;
 }
 
+/* for index page */
+
+#intro_text {
+    background-color: #DBE3E5;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px 60px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 1.5;
+    border-radius: 10px;
+}
+
+#introduction h1 {
+    text-align: center;
+}
+
+#intro_text a{
+    text-decoration: none;
+    color: #D0894B;
+}
+
+#intro_text a:hover{
+    text-decoration: none;
+    color: #D9B45D;
+}
+
 /* for history and rankings */
   
-main h1 {
+main h2 {
     font-size: 32px;
     color: #D0894B;
     font-family: "Red Hat Display";
@@ -197,6 +228,15 @@ td {
     color: #D9B45D
 }
 
+#footerLink {
+    width: 100%;
+    text-align: center;
+}
+
+#historyUsername {
+
+}
+
 @media (max-width:450px) {
     header h1 {
         font-size: 18px;
@@ -223,5 +263,10 @@ td {
 
     .login input {
         width: 97%;
+    }
+
+    main {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
