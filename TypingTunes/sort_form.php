@@ -1,5 +1,5 @@
 <?php
-    echo "<form action=\"#\">";
+    echo "<form action=\"#\" id=\"filter\">";
 
         echo "<label>";
 
