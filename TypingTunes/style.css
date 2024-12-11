@@ -95,6 +95,35 @@ main {
     text-align: center;
     font-size: 20px;
 }
+
+#suggested-buttons{
+    margin-top: 15px;
+    text-align: center;
+}
+
+#searchButton{
+    align-self: center;
+}
+
+.suggestButton{
+    margin-right: 10px;
+    margin-left: 10px;
+    background-color: #D0894B;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+.suggestButton:hover{
+    background-color: #D9B45D;
+}
+  
+
+#suggested-song-h2{
+    text-align: center;
+}
   
 footer {
     background-color: #2B4753;
@@ -129,8 +158,30 @@ footer p {
     border-radius: 10px;
 }
 
+section img {
+    display: block;
+    width: 40%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#introduction {
+    margin-top: 6%;
+}
+
 #introduction h1 {
     text-align: center;
+    margin-top: 20%;
+    font-size: 32px;
+    color: #D0894B;
+    font-family: "Red Hat Display";
+    margin: 10px;
+}
+
+.sider {
+    height: 900px;
+    width: auto;
+    margin: -80px 60px;
 }
 
 #intro_text a{

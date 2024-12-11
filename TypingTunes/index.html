@@ -6,61 +6,34 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <title>Typing Tunes</title>
 </head>
+
 <body>
-  <header>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <h1><a href="index.html">Typing Tunes</a></h1>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
-  </header>
 
-  <main>
-      <section class="login">
-        <h1>Login</h1>
+<main>
 
-        <form action="type.html" id="loginform">
-          <label>
-            Username <br />
-            <input type="input" 
-                   id="username-input"
-                   name="username"
-                   maxlength="40"
-                   required />
-          </label>
-          <br />
-          <div style="text-align: center;">
-              <button type="submit">Start Typing!</button>
-          </div>
-        </form>
-      </section>
-  </main>
+    <img class="sider" src="music1.jpg">
 
-  <footer>
-    <div class="history">
-      <a href="history.php">History</a>
-    </div>
-    <div><a href="index.html">Typing Tunes</a></div>
-    <div class="rankings">
-      <a href="rankings.php">Rankings</a>
-    </div>
-  </footer>
+<section id="introduction">
 
-  <script>
-    /**
-     * Callback function for when a user logs in. Adds their username to cookie
-     * data.
-     */
-     const handleSubmit = (event) => {
-      const formData = new FormData(document.getElementById("loginform"));
-      const username = formData.get("username");
-      document.cookie = "username=" + username + "; SameSite=lax";
-    }
+<h1>Get ready to type some tunes!</h1>
+<div id="intro_text"> 
+<p>Improve your typing skills by typing along to the lyrics of
+    your favorite songs by your favorite artists!</p>
+    <a href="signup.php">Sign up</a> or <a href="login.php">log in</a> to get started!
+</div>
 
-    const form = document.getElementById("loginform");
-    form.addEventListener("submit", handleSubmit);
-  </script>
+
+    <img src="typing.jpg">
+
+
+
+</section>
+
+
+    <img class="sider" src="music2.jpg">
+
+    
+</main>
+
+
 </body>
-</html>
