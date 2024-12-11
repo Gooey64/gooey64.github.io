@@ -90,6 +90,11 @@ main {
 #next-line {
     color: #808080;
 }
+
+#suggested-songs{
+    text-align: center;
+    font-size: 20px;
+}
   
 footer {
     background-color: #2B4753;
