@@ -44,7 +44,7 @@
                      name="artist"
                      maxlength="40" />
             </label>
-            <button type="submit">Search</button>
+            <button id = "searchButton" type="submit" class = "suggestButton">Search</button>
           </div>
         </form>
 
@@ -67,9 +67,13 @@
   </main>
   <main>
     <section class="song-suggestion">
-      <h2>Suggested Song</h2>
+      <h2 id ="suggested-song-h2">Suggested Song</h2>
       <div id = "suggested-songs">
         <!-- This is where I would put suggested songs... if I had any. -->
+      </div>
+      <div id = "suggested-buttons">
+        <button id = "next_song" class = "suggestButton">Next song</button>
+        <button id = "type_song" class = "suggestButton">Type this song</button>
       </div>
     </section>
   </main>
@@ -104,20 +108,42 @@
     let currentIndex = array.length;
 
     // While there remain elements to shuffle...
-    while (currentIndex != 0) {
+      while (currentIndex != 0) {
 
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
 
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+      }
     }
-  }
-  shuffle(SUGGESTED_SONGS);
-  suggested_songs_DOM.innerHTML += (SUGGESTED_SONGS[0][0] + " - " + SUGGESTED_SONGS[0][1])
+    shuffle(SUGGESTED_SONGS);
+    let songIndex = 0;
+    suggested_songs_DOM.innerHTML = (SUGGESTED_SONGS[songIndex][0] + " - " + SUGGESTED_SONGS[songIndex][1])
 
+    const nextSongFunc = () => {
+      songIndex += 1;
+      songIndex %= 11;
+      console.log(songIndex);
+      suggested_songs_DOM.innerHTML = (SUGGESTED_SONGS[songIndex][0] + " by " + SUGGESTED_SONGS[songIndex][1]);
+    }
+
+    const typeSongFunc = (event) => {
+      document.getElementById("title-input").value = SUGGESTED_SONGS[songIndex][1];
+      document.getElementById("artist-input").value = SUGGESTED_SONGS[songIndex][0];
+      handleSubmit(event);
+    }
+
+    next_song_button = document.getElementById("next_song");
+    type_song_button = document.getElementById("type_song");
+    next_song_button.addEventListener('click', nextSongFunc)
+    type_song_button.addEventListener('click', typeSongFunc);
+
+    
+
+    
     // Stores the lyrics array (a string for each line)
     let lyrics = [];
 
