@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>About | Rebecca Lee</title>
+<meta name="description" content="Rebecca Lee, Computer Science student at Tufts University. Unity/C# games, VR, real-time robot systems, and web backends.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=VT323&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#f7f3f6;color:#241d33;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#6a3d9e}
+a:hover{color:#c2477f}
+::selection{background:#f6c6da}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh">
+<sc-if value="{{ showGrid }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(#ebe3ee 1px,transparent 1px),linear-gradient(90deg,#ebe3ee 1px,transparent 1px);background-size:24px 24px"></div>
+</sc-if>
+<div style="position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:28px 20px 40px;display:flex;flex-direction:column;gap:40px">
+
+<header id="top" style="background:#fffdfe;border:2px solid #241d33;box-shadow:6px 6px 0 #241d33;border-radius:6px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 10px;background:#cdbdf2;border-bottom:2px solid #241d33;font-family:'VT323',monospace;font-size:21px">
+    <a href="index.html" style="color:#241d33;text-decoration:none">C:\Users\Rebecca\about_me.txt</a>
+    <div style="display:flex;gap:4px">
+      <span style="width:20px;height:18px;border:2px solid #241d33;background:#fffdfe;display:grid;place-items:center;font-size:16px;line-height:1">_</span>
+      <span style="width:20px;height:18px;border:2px solid #241d33;background:#fffdfe;display:grid;place-items:center;font-size:16px;line-height:1">□</span>
+      <a href="index.html" aria-label="Back to home" style="width:20px;height:18px;border:2px solid #241d33;background:#f6c6da;display:grid;place-items:center;font-size:16px;line-height:1;color:#241d33;text-decoration:none">×</a>
+    </div>
+  </div>
+  <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:6px 10px;font-family:'VT323',monospace;font-size:21px;background:#faf6fb">
+    <a href="index.html" style="color:#241d33;text-decoration:none;border:2px solid transparent;padding:0 10px">Home</a>
+    <a href="about.html" aria-current="page" style="color:#241d33;text-decoration:none;background:#f6c6da;border:2px solid #241d33;border-radius:4px;padding:0 10px">About</a>
+    <a href="projects.html" style="color:#241d33;text-decoration:none;border:2px solid transparent;padding:0 10px">Projects</a>
+    <a href="experience.html" style="color:#241d33;text-decoration:none;border:2px solid transparent;padding:0 10px">Experience</a>
+    <a href="contact.html" style="color:#241d33;text-decoration:none;border:2px solid transparent;padding:0 10px">Contact</a>
+    <a href="resume.pdf" target="_blank" style="color:#6a3d9e;border:2px solid transparent;padding:0 10px">Resume.pdf</a>
+  </nav>
+</header>
+
+<div id="about" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:32px;scroll-margin-top:20px">
+  <section style="background:#fffdfe;border:2px solid #241d33;box-shadow:6px 6px 0 #241d33;border-radius:6px;overflow:hidden">
+    <div style="padding:5px 10px;background:#c6ecdf;border-bottom:2px solid #241d33;font-family:'VT323',monospace;font-size:21px">about_me.txt</div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+      <h2 style="margin:0;font-family:'Pixelify Sans',sans-serif;font-size:32px;font-weight:700">Nice to meet you!</h2>
+      <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty">My favourite thing about Computer Science is the ability to create things just with your computer. It feels even better when your creation can be viewed or used by other people.</p>
+      <div style="font-family:'VT323',monospace;font-size:20px;color:#5a5068">off the clock:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="https://staticfile-30a9d.wasmer.app/" target="_blank" style="background:#f6c6da;border:2px solid #241d33;border-radius:99px;padding:4px 12px;font-size:15px;font-weight:500;color:#241d33;text-decoration:none">MS Paint art ↗</a>
+        <span style="background:#cdbdf2;border:2px solid #241d33;border-radius:99px;padding:4px 12px;font-size:15px;font-weight:500">Kpop</span>
+        <span style="background:#f7ebb5;border:2px solid #241d33;border-radius:99px;padding:4px 12px;font-size:15px;font-weight:500">baking sweet treats</span>
+        <span style="background:#c5e1f7;border:2px solid #241d33;border-radius:99px;padding:4px 12px;font-size:15px;font-weight:500">lifting weights</span>
+      </div>
+      <a href="https://staticfile-30a9d.wasmer.app/" target="_blank" style="display:flex;flex-direction:column;gap:6px;text-decoration:none;color:#241d33;margin-top:4px">
+        <img src="images/gallery.jpg" alt="Screenshot of Rebecca's Microsoft Paint art gallery website" loading="lazy" style="width:100%;aspect-ratio:2/1;object-fit:cover;object-position:top;border:2px solid #241d33">
+        <span style="font-size:14px;color:#5a5068">My Microsoft Paint gallery, a site I made with HTML, CSS, and JS to show off my art.</span>
+      </a>
+    </div>
+  </section>
+  <section id="interests" style="position:relative;background:#fffdfe;border:2px solid #241d33;box-shadow:6px 6px 0 #241d33;border-radius:6px;overflow:visible;scroll-margin-top:20px;align-self:start">
+    <div style="padding:5px 10px;background:#f6c6da;border-bottom:2px solid #241d33;font-family:'VT323',monospace;font-size:21px;border-radius:4px 4px 0 0">special_interests.txt</div>
+    <div style="padding:24px 24px 56px;display:flex;flex-direction:column;gap:16px">
+      <h2 style="margin:0;font-family:'Pixelify Sans',sans-serif;font-size:32px;font-weight:700">What kinds of projects do I like?</h2>
+      <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty"><strong>Games as systems.</strong> I follow the League of Legends and VALORANT pro scenes, and what hooks me is how those games are put together: champions, items, and agents are components with their own rules, and the interesting part is how those rules interact. I've built platformers in Unity, and on Owlhead I integrated a treadmill so you can walk through a game with your own feet.</p>
+      <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty"><strong>Robots you can see working.</strong> I like code that makes hardware move, like training a LEGO quadruped to walk or connecting a classroom of robots to a teacher's phone. Next up is a 5th-year M.S. in Human-Robot Interaction.</p>
+      <p style="margin:0;font-size:17px;line-height:1.6;text-wrap:pretty"><strong>Things real people use.</strong> I enjoy building backends and tools for actual users, like the dishware-lending app for the Lexington Zero Waste nonprofit.</p>
+    </div>
+    <sc-if value="{{ showTodos }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;right:-10px;bottom:-18px;max-width:220px;background:#f7ebb5;border:2px solid #241d33;padding:8px 10px;font-family:'VT323',monospace;font-size:18px;line-height:1.1;transform:rotate(2.5deg);box-shadow:3px 3px 0 #241d33">TODO(Rebecca): draft. Approve or edit before publishing.</div>
+    </sc-if>
+  </section>
+</div>
+
+<footer style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:'VT323',monospace;font-size:19px;color:#5a5068">
+  <span>© 2026 Rebecca Lee</span>
+  <a href="#top" style="color:#5a5068">back to top ↑</a>
+</footer>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTodos&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showGrid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Decoration&quot;}}">
+class Component extends DCLogic {
+  renderVals() { return { showGrid: this.props.showGrid ?? true, showTodos: this.props.showTodos ?? false }; }
+}
+</script>
+</body>
+</html>
